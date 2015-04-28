@@ -1,13 +1,19 @@
 #! /usr/bin/python
 # -*- coding:utf-8 -*-
 
+#constants
+VELOV_DATA_SOURCE = "https://download.data.grandlyon.com/ws/rdata/jcd_jcdecaux.jcdvelov/all.json"
+
 import sys
 reload(sys)
 sys.setdefaultencoding("utf-8")
 
+import threading
 import os
 from flask import Flask, flash, render_template, request, session, jsonify
 from flask.ext.sqlalchemy import SQLAlchemy
+
+from server import velov
 
 from server import service
 
@@ -140,6 +146,11 @@ def displaye():
 @app.errorhandler(404)
 def page_not_found(error):
     return jsonify(error="404"), 404
+	
+def start_velov_data():
+	t = threading.Timer(60.0, velov.refreshVelovData, [VELOV_DATA_SOURCE])
+	t.start()
+	
 
 if __name__ == '__main__':
   app.debug = True
