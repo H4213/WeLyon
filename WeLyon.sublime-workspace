@@ -115,6 +115,30 @@
 	},
 	"buffers":
 	[
+		{
+			"file": "server/service.py",
+			"settings":
+			{
+				"buffer_size": 3074,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "server.py",
+			"settings":
+			{
+				"buffer_size": 3212,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/model.py",
+			"settings":
+			{
+				"buffer_size": 5552,
+				"line_ending": "Unix"
+			}
+		}
 	],
 	"build_system": "",
 	"command_palette":
@@ -200,6 +224,7 @@
 		"case_sensitive": true,
 		"find_history":
 		[
+			"control",
 			"athegorie",
 			"marker",
 			"Marker",
@@ -282,6 +307,7 @@
 		"regex": false,
 		"replace_history":
 		[
+			"service",
 			"ategory",
 			"pin",
 			"Pin",
@@ -304,8 +330,98 @@
 	"groups":
 	[
 		{
+			"selected": 1,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "server/service.py",
+					"settings":
+					{
+						"buffer_size": 3074,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								803,
+								803
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "server.py",
+					"settings":
+					{
+						"buffer_size": 3212,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2121,
+								2121
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		},
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 2,
+					"file": "src/model.py",
+					"settings":
+					{
+						"buffer_size": 5552,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								5524,
+								5524
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1967.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
 			]
 		}
 	],
@@ -326,11 +442,18 @@
 				0,
 				1,
 				1
+			],
+			[
+				1,
+				0,
+				2,
+				1
 			]
 		],
 		"cols":
 		[
 			0.0,
+			0.5,
 			1.0
 		],
 		"rows":

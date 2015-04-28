@@ -78,8 +78,9 @@ class Category(db.Model):
     #------------------------------------------------------------------
 
 class Pin(db.Model):
-    __tablename__ = "pins"
+    __tablename__ = 'pins'
     id = db.Column(db.Integer, primary_key = True)
+    type = db.Column(db.String(20))
     idUser = db.Column(db.Integer, db.ForeignKey("users.id"))
     title = db.Column(db.String(20))
     categories = db.relationship("Category",
@@ -88,11 +89,6 @@ class Pin(db.Model):
     description = db.Column(db.String(400)) 
     lng = db.Column(db.Float)
     lat = db.Column(db.Float)
-
-    __mapper_args__ = {
-        'polymorphic_identity':'pins',
-        #'polymorphic_on':type
-    }
 
     def __init__(self, title, lng, lat, idUser = 1, categories = [], description = ""):
         self.idUser = idUser
@@ -122,17 +118,18 @@ class Pin(db.Model):
     def delete(self):
         db.session.delete(self)
         db.session.commit()
-    #------------------------------------------------------------------
 
-class DynamicPin(Pin):
-    __tablename__ = "dynamicpins"
+    __mapper_args__ = {
+        'polymorphic_on':type,
+        'polymorphic_identity':'employee'
+    }
+
+class DynPin(Pin):
+    __tablename__ = 'dynpins'
+
     id = Column(db.Integer, db.ForeignKey('pins.id'), primary_key=True)
     dateBegin = Column(db.DateTime)
     dateEnd = Column(db.DateTime)
-
-    __mapper_args__ = {
-        'polymorphic_identity':'dynamicpins',
-    }
 
     def serialize(self):
         return {
@@ -156,6 +153,45 @@ class DynamicPin(Pin):
     def delete(self):
         db.session.delete(self)
         db.session.commit()
+
+    __mapper_args__ = {
+        'polymorphic_identity':'dynpin',
+    }
+
+class Velov(Pin):
+    __tablename__ = 'velovs'
+
+    id = Column(db.Integer, db.ForeignKey('pins.id'), primary_key=True)
+    libre = Column(db.Integer)
+    velo = Column(db.Integer)
+
+    def serialize(self):
+        return {
+            'id': self.id,
+            'user': self.idUser,
+            'title': self.title,
+            'category': [item.serializeSmall() for item in self.categories],
+            'description': self.description,
+            'lng': self.lng,
+            'lat': self.lat,
+            'libre': self.libre,
+            'velo': self.velo,
+        }
+
+    def serializeSmall(self):
+        return {
+            'id': self.id,
+            'title': self.title,
+        }
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    __mapper_args__ = {
+        'polymorphic_identity':'velov',
+    }
+
 
  
 db.create_all()
