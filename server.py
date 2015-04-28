@@ -76,15 +76,15 @@ def addUser():
 def delete(obj = None, id = None):
   if (obj == "user"):
     db.session.delete(User.query.get(id))
-  else if(obj == "pin"):
+  elif(obj == "pin"):
     db.session.delete(Pin.query.get(id))
-  else if(obj == "category"):
+  elif(obj == "category"):
     db.session.delete(Category.query.get(id))
   else:
     return jsonify(retour = "0") #No object deleted
 
   db.session.commit()
-return jsonify(retour = "1") #object deleted
+  return jsonify(retour = "1") #object deleted
 
 
 #test

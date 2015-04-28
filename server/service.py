@@ -9,7 +9,7 @@ def connectToDatabase():
     """
     Connect to our SQLite database and return a Session object
     """
-    session = modele.db
+    session = model.db
     return session
 
 db = connectToDatabase()
