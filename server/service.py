@@ -1,5 +1,5 @@
 from src import model
-from src.model import User, Pin, Category
+from src.model import User, Pin, Category, Velov
 from flask import Flask, flash, render_template, request, session, jsonify
 from flask.ext.sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine
@@ -92,6 +92,8 @@ def getCategoryById(category):
 		return jsonify(error="No category")
 
 	return jsonify(error = "Invalid parameters")
+	
+
 
 
 
@@ -124,7 +126,20 @@ def addPin(form):
 	#	return jsonify(pin = pin.serialize()) 
 		
 	#return jsonify(error="invalid parameters")
-
+	
+#updates or creates a velov 
+def updateVelovByIdVelov(current):
+	if current:
+		item = Velov.query.filter_by(idVelov=current.idVelov).first()
+		
+		if item:
+			item.velo = current.velo
+			item.libre = current.libre
+			db.session.commit()
+		else:
+			addPin(current)
+		
+			
 def addUser(form):
 	if (form['pseudo'] and form['passw']):
 
