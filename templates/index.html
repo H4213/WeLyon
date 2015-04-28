@@ -12,11 +12,11 @@
         <title>WeLyon</title>
 
         <!-- Bootstrap core CSS -->
-        <link href="components/bootstrap-3.3.4/css/bootstrap.min.css" rel="stylesheet">
+        <link href="../components/bootstrap-3.3.4/css/bootstrap.min.css" rel="stylesheet">
         <!-- Bootstrap theme -->
         <!-- <link href="components/bootstrap-3.3.4/css/bootstrap-theme.min.css" rel="stylesheet"> -->
         <!-- Custom styles for this template -->
-        <link href="platform/css/weLyon.css" rel="stylesheet">
+        <link href="../statics/css/weLyon.css" rel="stylesheet">
     </head>
 
     <body role="document">
@@ -33,7 +33,7 @@
                             <span class="icon-bar"></span>
                         </button>
                         <a class="navbar-brand" href="#"> 
-                            <img id="brandImg" alt="Brand" src="assets/weLyonLogoNoir.png"> 
+                            <img id="brandImg" alt="WeLyon" src="../assets/weLyonLogoNoir.png"> 
                         </a>
                     </div>
 
@@ -56,17 +56,17 @@
 
                 <div id="filters" class="col-sm-12 col-md-2">
                     <div id="filter" class="col-md-12">
-                        <!-- <form class="form-inline"> -->
-                            <div class="col-md-6 form-group">
+                        <form>
+                            <div class="form-group">
                                 <p>De</p>
                                 <input type="date" class="form-control" id="dateInit" placeholder="">
                             </div>
-                            <div class="col-md-6 form-group">
+                            <div class=" form-group">
                                 <p>à</p>
                                 <input type="date" class="form-control" id="dateFin" placeholder="">
                             </div>
                             <button type="submit" class="btn btn-primary pull-right">Filtrer</button>
-                        <!-- </form> -->
+                        </form>
                     </div>
 
                     <div id="categories" class="btn-group-vertical btn-block" role="group" aria-label="...">
@@ -86,9 +86,9 @@
                         </div>
                     </div>
 
-                    <div id="map" class="row">
-                        <h1> MAP </h1>
-                    </div>               
+                    <div id="map-container">
+                        <div id="map"></div>
+                    </div>        
                 </div>
 
             </div>
@@ -101,12 +101,12 @@
         Placed at the end of the document so the pages load faster -->
 
           <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-          <script src="components/jquery/jquery-2.1.0.js"></script>
-          <!-- Include all compiled plugins (below), or include individual files as needed -->
-        <script src="components/bootstrap-3.3.4/js/bootstrap.min.js"></script>
+        <script src="../components/jquery/jquery-2.1.0.js"></script>
+        <script src="../components/bootstrap-3.3.4/js/bootstrap.min.js"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
           <!-- JavaScript inputs -->
-        <script src="platform/js/weLyon.js"></script>
-        
+        <script src="../statics/js/weLyon.js"></script>
+       
     </body>
 
 </html>
