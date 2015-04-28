@@ -1,5 +1,5 @@
-from model import modele
-from model.modele import User, Pin, Category
+from src import model
+from src.model import User, Pin, Category
 from flask import Flask, flash, render_template, request, session, jsonify
 from flask.ext.sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine
@@ -14,7 +14,7 @@ def connectToDatabase():
 
 db = connectToDatabase()
 
-def pins(category):
+def getAllPin(category):
 	"""
 	request for all pins
 	"""
@@ -34,7 +34,7 @@ def pins(category):
 	print "pins vide"
 	return jsonify(error="No pins")
 
-def pin(idPin):
+def getPinById(idPin):
 	print idPin
 	if idPin:
 		item = Pin.query.get(int(idPin))
@@ -48,8 +48,8 @@ def pin(idPin):
 
 	return jsonify(error = "Invalid parameters")
 
-def displayUser():
-	print "displayUser()"
+def getAllUser():
+	print "getAllUser"
 
 	items = User.query.all()
 
@@ -62,7 +62,7 @@ def displayUser():
 	print "user vide"
 	return jsonify(error="No user")
 
-def displayCategories(pin):
+def getAllCategory(pin):
 	print "displayCategories"
 	#id de la pin
 
@@ -79,7 +79,7 @@ def displayCategories(pin):
 	print "Category vide"
 	return jsonify(error="No category")
 
-def displayCategory(category):
+def getCategoryById(category):
 	print "displayCategory"
 	if category:
 		item = Category.query.filter_by(nom=category).first()
@@ -142,10 +142,3 @@ def addUser(form):
 		return jsonify(id=user.id, pseudo=user.pseudo)
 
 	return jsonify(error="invalid parameters")
-
-
-
-def test(form):
-	return form['name']
-
-"""def paiment():"""

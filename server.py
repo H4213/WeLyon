@@ -9,12 +9,12 @@ import os
 from flask import Flask, flash, render_template, request, session, jsonify
 from flask.ext.sqlalchemy import SQLAlchemy
 
-from controler import control
+from server import service
 
-from model.modele import User, Pin, Category
+from src.model import User, Pin, Category
 
 app = Flask(__name__)
-db = control.connectToDatabase()
+db = service.connectToDatabase()
 
 @app.route('/', methods=('GET', 'POST'))
 def index():
@@ -29,54 +29,69 @@ def index():
 @app.route('/pins/')
 @app.route('/pins/<category>/')
 def pins(category = None):
-  return control.pins(category)
+  return service.getAllPin(category)
 
 @app.route('/pin/<idPin>/')
 def pin(idPin = None):
-  return control.pin(idPin)
+  return service.getPinById(idPin)
 
 @app.route('/user')
 def user():
   print "user\n"
-  return control.displayUser()
+  return service.getAllUser()
 
 @app.route('/categories/')
 @app.route('/categories/<pin>/')
 def categories(pin = None):
-  return control.displayCategories(pin)
+  return service.getAllCategory(pin)
 
 @app.route('/category/<category>/')
 def category(category = None):
-  return control.displayCategory(category)
+  return service.getCategoryById(category)
 
 #renvoie l'id après l'authentification de l'utilisateur
 @app.route('/auth', methods=('GET', 'POST'))
 def auth():
   if request.method == 'POST':
-    return control.authentificaton(request.form)
+    return service.authentificaton(request.form)
   return jsonify(error="false request")
 
 #ajout d'un marqueur
 @app.route('/add/pin', methods=('GET', 'POST'))
 def addPin():
   if request.method == 'POST':
-    return control.addPin(request.form)
+    return service.addPin(request.form)
   return jsonify(error="false request")
 
 #inscription d'un utilisateur
 @app.route('/add/user', methods=('GET', 'POST'))
 def addUser():
   if request.method == 'POST':
-    return control.addUser(request.form)
+    return service.addUser(request.form)
   return jsonify(error="false request")
 
+@app.route('/delete/<obj>/<id>/')
+@app.route('/delete/<obj>/<id>/')
+@app.route('/delete/<obj>/<id>/')
+def delete(obj = None, id = None):
+  if (obj == "user"):
+    db.session.delete(User.query.get(id))
+  else if(obj == "pin"):
+    db.session.delete(Pin.query.get(id))
+  else if(obj == "category"):
+    db.session.delete(Category.query.get(id))
+  else:
+    return jsonify(retour = "0") #No object deleted
+
+  db.session.commit()
+return jsonify(retour = "1") #object deleted
 
 
 #test
 @app.route('/test', methods=('GET', 'POST'))
 def test():
   if request.method == 'POST':
-    return control.test(request.form)
+    return service.test(request.form)
   return jsonify(error="false request")
 
 @app.route('/test2')

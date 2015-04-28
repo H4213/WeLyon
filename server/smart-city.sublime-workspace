@@ -4,6 +4,10 @@
 		"selected_items":
 		[
 			[
+				"date",
+				"dateEnd"
+			],
+			[
 				"categ",
 				"category"
 			],
@@ -112,10 +116,13 @@
 	"buffers":
 	[
 		{
+			"contents": "#! /usr/bin/python\n# -*- coding:utf-8 -*-\n\nimport sys\nreload(sys)\nsys.setdefaultencoding(\"utf-8\")\n\nimport os\nfrom flask import Flask, flash, render_template, request, session, jsonify\nfrom flask.ext.sqlalchemy import SQLAlchemy\n\nfrom controler import control\n\nfrom model.modele import User, Pin, Category\n\napp = Flask(__name__)\ndb = control.connectToDatabase()\n\n@app.route('/', methods=('GET', 'POST'))\ndef index():\n  record = Pin.query.first()\n  if record:\n    print \"test1\"\n  else:\n    print \"sdqg\"\n  return \"Hi Bitches\"\n\n#Affichage des différents marqueurs enregistrés\n@app.route('/pins/')\n@app.route('/pins/<category>/')\ndef pins(category = None):\n  return control.pins(category)\n\n@app.route('/pin/<idPin>/')\ndef pin(idPin = None):\n  return control.pin(idPin)\n\n@app.route('/user')\ndef user():\n  print \"user\\n\"\n  return control.displayUser()\n\n@app.route('/categories/')\n@app.route('/categories/<pin>/')\ndef categories(pin = None):\n  return control.displayCategories(pin)\n\n@app.route('/category/<category>/')\ndef category(category = None):\n  return control.displayCategory(category)\n\n#renvoie l'id après l'authentification de l'utilisateur\n@app.route('/auth', methods=('GET', 'POST'))\ndef auth():\n  if request.method == 'POST':\n    return control.authentificaton(request.form)\n  return jsonify(error=\"false request\")\n\n#ajout d'un marqueur\n@app.route('/add/pin', methods=('GET', 'POST'))\ndef addPin():\n  if request.method == 'POST':\n    return control.addPin(request.form)\n  return jsonify(error=\"false request\")\n\n#inscription d'un utilisateur\n@app.route('/add/user', methods=('GET', 'POST'))\ndef addUser():\n  if request.method == 'POST':\n    return control.addUser(request.form)\n  return jsonify(error=\"false request\")\n\n@app.route('/delete/<obj>/<id>/')\n@app.route('/delete/<obj>/<id>/')\n@app.route('/delete/<obj>/<id>/')\ndef delete(obj = None, id = None):\n  if (obj == \"user\"):\n    db.session.delete(User.query.get(id))\n  else if(obj == \"pin\"):\n    db.session.delete(Pin.query.get(id))\n  else if(obj == \"category\")\n    db.session.delete(Category.query.get(id))\n\n  db.session.commit()\nreturn jsonify(retour = \"1\")\n\n\n#test\n@app.route('/test', methods=('GET', 'POST'))\ndef test():\n  if request.method == 'POST':\n    return control.test(request.form)\n  return jsonify(error=\"false request\")\n\n@app.route('/test2')\ndef test2():\n  print \"0\"\n\n  cat1 = Category.query.get(7)\n\n  print str(cat1.nom)\n\n  \n\n  print \"1\"\n  pun = Pin(\"1&er\", 123, 134)\n\n  #cat1.pins.append(pun)\n\n  print \"2\"\n  #db.session.add(pun)\n  print \"3\"\n\n  #db.session.commit()\n\n  print \"5\"\n\n\n  return str(cat1.pins[2].title)\n\n@app.route('/test3')\ndef test3():\n  print \"--------------------------------\\n\\n\\n\"\n\n  pin = Pin.query.filter_by(title=\"1er\").first()\n  print str(pin.id)\n  print pin.title\n  print str(pin.categories)\n\n  return pin.categories[0].id\n\n@app.route('/useer')\ndef displaye():\n  print \"useer\"\n  return render_template('JSON.html')\n\n\n@app.errorhandler(404)\ndef page_not_found(error):\n    return jsonify(error=\"404\"), 404\n\nif __name__ == '__main__':\n  app.debug = True\n  app.run()\n  #port = int(os.environ.get(\"PORT\", 5000))\n  #app.run(host='0.0.0.0', port=port)",
 			"file": "app.py",
+			"file_size": 3140,
+			"file_write_time": 1430210722000000,
 			"settings":
 			{
-				"buffer_size": 2496,
+				"buffer_size": 3137,
 				"line_ending": "Unix"
 			}
 		},
@@ -123,7 +130,7 @@
 			"file": "controler/control.py",
 			"settings":
 			{
-				"buffer_size": 2444,
+				"buffer_size": 0,
 				"line_ending": "Unix"
 			}
 		},
@@ -131,7 +138,7 @@
 			"file": "Test Html/testUser.html",
 			"settings":
 			{
-				"buffer_size": 422,
+				"buffer_size": 0,
 				"line_ending": "Unix"
 			}
 		},
@@ -139,7 +146,7 @@
 			"file": "Test Html/AddUser.html",
 			"settings":
 			{
-				"buffer_size": 470,
+				"buffer_size": 0,
 				"line_ending": "Unix"
 			}
 		},
@@ -147,7 +154,18 @@
 			"file": "templates/JSON.html",
 			"settings":
 			{
-				"buffer_size": 610,
+				"buffer_size": 0,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "",
+			"file": "model/modele.py",
+			"file_size": -1,
+			"file_write_time": -1,
+			"settings":
+			{
+				"buffer_size": 0,
 				"line_ending": "Unix"
 			}
 		},
@@ -155,15 +173,7 @@
 			"file": "Test Html/AddMarker",
 			"settings":
 			{
-				"buffer_size": 1321,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "model/modele.py",
-			"settings":
-			{
-				"buffer_size": 3352,
+				"buffer_size": 0,
 				"line_ending": "Unix"
 			}
 		},
@@ -171,7 +181,7 @@
 			"file": "templates/marker.html",
 			"settings":
 			{
-				"buffer_size": 287,
+				"buffer_size": 0,
 				"line_ending": "Unix"
 			}
 		},
@@ -179,7 +189,7 @@
 			"file": "templates/user.html",
 			"settings":
 			{
-				"buffer_size": 138,
+				"buffer_size": 0,
 				"line_ending": "Unix"
 			}
 		}
@@ -208,6 +218,7 @@
 	},
 	"file_history":
 	[
+		"/home/leo/Documents/WeLyon/server/model/modele.py",
 		"/home/leo/Documents/Smart-City/testUser.html",
 		"/home/leo/Documents/Smart-City/app.py",
 		"/home/leo/Documents/Smart-City/Serveur/smart-city.sublime-project",
@@ -378,15 +389,15 @@
 					"file": "app.py",
 					"settings":
 					{
-						"buffer_size": 2496,
+						"buffer_size": 3137,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1942,
-								1942
+								2837,
+								2837
 							]
 						],
 						"settings":
@@ -396,7 +407,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 1020.0,
+						"translation.y": 1853.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -406,15 +417,15 @@
 					"file": "controler/control.py",
 					"settings":
 					{
-						"buffer_size": 2444,
+						"buffer_size": 0,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								69,
-								69
+								0,
+								0
 							]
 						],
 						"settings":
@@ -433,15 +444,15 @@
 					"file": "Test Html/testUser.html",
 					"settings":
 					{
-						"buffer_size": 422,
+						"buffer_size": 0,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								422,
-								422
+								0,
+								0
 							]
 						],
 						"settings":
@@ -461,15 +472,15 @@
 					"file": "Test Html/AddUser.html",
 					"settings":
 					{
-						"buffer_size": 470,
+						"buffer_size": 0,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								470,
-								470
+								0,
+								0
 							]
 						],
 						"settings":
@@ -487,7 +498,7 @@
 			]
 		},
 		{
-			"selected": 2,
+			"selected": 1,
 			"sheets":
 			[
 				{
@@ -495,15 +506,15 @@
 					"file": "templates/JSON.html",
 					"settings":
 					{
-						"buffer_size": 610,
+						"buffer_size": 0,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								138,
-								138
+								0,
+								0
 							]
 						],
 						"settings":
@@ -520,18 +531,46 @@
 				},
 				{
 					"buffer": 5,
-					"file": "Test Html/AddMarker",
+					"file": "model/modele.py",
 					"settings":
 					{
-						"buffer_size": 1321,
+						"buffer_size": 0,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								574,
-								574
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1321.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "Test Html/AddMarker",
+					"settings":
+					{
+						"buffer_size": 0,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
 							]
 						],
 						"settings":
@@ -547,47 +586,19 @@
 					"type": "text"
 				},
 				{
-					"buffer": 6,
-					"file": "model/modele.py",
-					"settings":
-					{
-						"buffer_size": 3352,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								3258,
-								3258
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Python/Python.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
 					"buffer": 7,
 					"file": "templates/marker.html",
 					"settings":
 					{
-						"buffer_size": 287,
+						"buffer_size": 0,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1,
-								1
+								0,
+								0
 							]
 						],
 						"settings":
@@ -605,15 +616,15 @@
 					"file": "templates/user.html",
 					"settings":
 					{
-						"buffer_size": 138,
+						"buffer_size": 0,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								53,
-								53
+								0,
+								0
 							]
 						],
 						"settings":

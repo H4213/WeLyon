@@ -32,7 +32,12 @@ class User(db.Model):
             'passw': self.passw,
         }
 
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
     #------------------------------------------------------------------
+
 association_table = Table('associationPinCategory', db.Model.metadata,
     Column('pin_id', Integer, ForeignKey('pins.id')),
     Column('category_id', Integer, ForeignKey('categories.id'))
@@ -65,6 +70,10 @@ class Category(db.Model):
             'id': self.id,
             'nom': self.nom,
         }
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
 
     #------------------------------------------------------------------
 
@@ -109,6 +118,10 @@ class Pin(db.Model):
             'id': self.id,
             'title': self.title,
         }
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
     #------------------------------------------------------------------
 
 class DynamicPin(Pin):
@@ -120,6 +133,29 @@ class DynamicPin(Pin):
     __mapper_args__ = {
         'polymorphic_identity':'dynamicpins',
     }
+
+    def serialize(self):
+        return {
+            'id': self.id,
+            'user': self.idUser,
+            'title': self.title,
+            'category': [item.serializeSmall() for item in self.categories],
+            'description': self.description,
+            'lng': self.lng,
+            'lat': self.lat,
+            'DateDebut': self.dateBegin,
+            'DateFin': self.dateEnd,
+        }
+
+    def serializeSmall(self):
+        return {
+            'id': self.id,
+            'title': self.title,
+        }
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
 
  
 db.create_all()
