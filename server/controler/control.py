@@ -1,5 +1,5 @@
 from model import modele
-from model.modele import User, Marker
+from model.modele import User, Pin, Category
 from flask import Flask, flash, render_template, request, session, jsonify
 from flask.ext.sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine
@@ -14,19 +14,39 @@ def connectToDatabase():
 
 db = connectToDatabase()
 
-def marker(cathegorie):
+def pins(category):
 	"""
-	request for all markers
+	request for all pins
 	"""
-	if (cathegorie):
-		items = Marker.query.filter_by(cathegorie=cathegorie).all()
+	if (category):
+		cat = Category.query.get(category)
+		if cat:
+			items = cat.pins 
+		else:
+			items = []
 	else:
-		items = Marker.query.all()
+		items = Pin.query.all()
 
-	if not(items):
-		print "Markers vides"
+	if items:
+		print "Pins non vides"
+		return jsonify(pins=[item.serialize() for item in items])
 
-	return jsonify(markers=[item.serialize() for item in items])
+	print "pins vide"
+	return jsonify(error="No pins")
+
+def pin(idPin):
+	print idPin
+	if idPin:
+		item = Pin.query.get(int(idPin))
+
+		print item.id
+
+		if item:
+			return jsonify(item.serialize())
+
+		return jsonify(error="No pin")
+
+	return jsonify(error = "Invalid parameters")
 
 def displayUser():
 	print "displayUser()"
@@ -42,6 +62,39 @@ def displayUser():
 	print "user vide"
 	return jsonify(error="No user")
 
+def displayCategories(pin):
+	print "displayCategories"
+	#id de la pin
+
+	if pin:
+		pi = Pin.query.get(pin)
+		items = pi.categories
+	else:
+		items = Category.query.all()
+
+	if items :
+		print "categories non vide"
+		return jsonify(categories=[item.serialize() for item in items])
+
+	print "Category vide"
+	return jsonify(error="No category")
+
+def displayCategory(category):
+	print "displayCategory"
+	if category:
+		item = Category.query.filter_by(nom=category).first()
+
+		print item.id
+
+		if item:
+			return jsonify(item.serialize())
+
+		return jsonify(error="No category")
+
+	return jsonify(error = "Invalid parameters")
+
+
+
 	
 
 def authentification(form):
@@ -50,10 +103,10 @@ def authentification(form):
 		return jsonify(id=user.id, pseudo=user.pseudo)
 	return jsonify(error="authentification error")
 
-def addMarker(form):
-	print "addMarker"
+def addPin(form):
+	print "addPin"
 	if (form['title'] and form['user'] and form['lng'] and form['lat']):
-		exist = Marker.query.filter_by(title=form['title'], lng=form['lng'], lat=form['lat']).first()
+		exist = Pin.query.filter_by(title=form['title'], lng=form['lng'], lat=form['lat']).first()
 		
 		if exist:
 			return jsonify(error="already exists")
@@ -63,12 +116,12 @@ def addMarker(form):
 		if not(user):
 			return jsonify(error="user doesn't exist")
 		
-		marker = Marker(form['title'], float(form['lng']), float(form['lat']), form['user'], form['cathegorie'], form['description'])
+		#FAUX pin = Pin(form['title'], float(form['lng']), float(form['lat']), form['user'], form['category'], form['description'])
 		
-		db.session.add(marker)
+		db.session.add(pin)
 		db.session.commit()
 		
-		return jsonify(marker = marker.serialize) 
+		return jsonify(pin = pin.serialize()) 
 		
 	return jsonify(error="invalid parameters")
 
