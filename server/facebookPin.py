@@ -3,12 +3,6 @@ import facebook
 import json
 import datetime
 import sys
-<<<<<<< HEAD
-=======
-import urllib
-import urlparse
-import subprocess
->>>>>>> origin/Dev-Facebook
 import requests
 sys.path.append("../")
 
@@ -17,23 +11,17 @@ import service
 from src.model import FacebookPin
 
 def createFacebookTable() :
-
-<<<<<<< HEAD
 	# FACEBOOK_APP_ID     = '1620948188142851'
 	# FACEBOOK_APP_SECRET = '52762f86fefa57c8f828617d15625169'
-=======
 	FACEBOOK_APP_ID     = '1620948188142851'
 	FACEBOOK_APP_SECRET = '52762f86fefa57c8f828617d15625169'
->>>>>>> origin/Dev-Facebook
+
 
 	# payload = {'grant_type': 'client_credentials', 'client_id': FACEBOOK_APP_ID, 'client_secret': FACEBOOK_APP_SECRET }
 	# file = requests.post('https://graph.facebook.com/oauth/access_token?', params = payload)
 	# #print file.text #to test what the FB api responded with    
-<<<<<<< HEAD
 	token = 'CAACEdEose0cBALvmV9HpdEt3LjuajMwGZC5YU2psFqAGxHACDETMBKqi3KY7yZAVzyXgYvcnZCpLwuxkAHECALB6yHoaScthtoldSknu3hXAdrfpVMZALbCQEm8zZAZBY67UZCoEE1pkS7iuCuk86WmhCAIDqCkdjATsKF2fpy0A6Lv1feV4um3RlaeDZBq9KnCbJaGqMIcaHsizH6q9zgfZB'
-=======
-	token = 'CAACEdEose0cBAKL9ZBMtAT8beNYBYnVegW2EYKAZCIRIrmMeqdsNv50m0uH5bgp7PAkwOYtzQG2qxAvHhb3gCqehrv5aygeeZAyMPTXmXokymoAleUWkuYDZC0Fut7plEDs3gAIA4WD3PHgufNyBlW9jNmNJRmAGcNhbOAjwT897vhgG5nJsOUM7ZArZCp7VZAyJRdvZAt0GwbuEpSiSZB0FT'
->>>>>>> origin/Dev-Facebook
+
 
 	# # Trying to get an access token. Very awkward.
 	# oauth_args = dict(client_id     = FACEBOOK_APP_ID, client_secret = FACEBOOK_APP_SECRET, grant_type    = 'client_credentials')
@@ -47,11 +35,8 @@ def createFacebookTable() :
 	#     exit()
 
 	#token = 'CAACEdEose0cBAPfoaH5UtoC3nt4KYqNShODlAJyOh71QPX4FLKFldn1Tw44wu95CdtMm96gnvPkUkJGPIhsuUtzvNDncxmLrcWGA64ZCULx0GYOGmbZBS9s1jjLqg7ZB9PAaxK26XwtEgIPvciuJySZAF93FLzuBvjNUU4ANB2rQm8VnhNZCOoDjb8JDKjYiU6Q8yMMaNGoQuKFpFx8Q1'
-<<<<<<< HEAD
+
 	nbEvent=100
-=======
-	nbEvent=30
->>>>>>> origin/Dev-Facebook
 	latitudeMin=45.6389404
 	longitudeMin=4.7530973
 	latitudeMax=46.2276655
@@ -91,15 +76,10 @@ def createFacebookTable() :
 								end_time = Event['end_time']
 							else:
 								 end_time = 'currentTime'
-<<<<<<< HEAD
 							#image=graph.request(idEvent+'/picture?redirect=false')
 							#linkpicture=image['data']['url']
 							idUser=1
-=======
-							image=graph.request(idEvent+'/picture?redirect=false')
-							linkpicture=image['data']['url']
-							idUser=2
->>>>>>> origin/Dev-Facebook
+
 							obj = FacebookPin(title, longitude, latitude, idUser, [], description)
 							obj.dateBegin = start_time
 							obj.dateEnd = end_time
@@ -107,11 +87,8 @@ def createFacebookTable() :
 							obj.idFacebook = idEvent
 							listFacebook.append(obj)
 							print("Ok")
-<<<<<<< HEAD
+
 		except (requests.ConnectionError , urllib2.URLError):
-=======
-		except requests.ConnectionError:
->>>>>>> origin/Dev-Facebook
 			print ("ConnectionError")
 		
 			
