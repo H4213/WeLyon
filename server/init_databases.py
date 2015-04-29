@@ -9,6 +9,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 import time
 import service
+sys.setdefaultencoding("utf-8")
 
 def init_admin_user():
 	admin_user = User.query.filter_by(pseudo="admin").first()
@@ -29,7 +30,11 @@ def try_push_category(name, descr):
 def init_categories():
 	service.logMessage("Creation des categories")
 	try_push_category("Velo'v", "les stations velo'v")
-	try_push_category("Facebook Event", "Un evenenement facebook")
+	try_push_category("Bar", "Bar")
+	try_push_category("Restaurant", "Bar")
+	try_push_category("Hotel", "Hotel/Motel")
+	try_push_category("Monument", "")
+	try_push_category("Soiree", "")
 	
 def init_all():
 	init_admin_user()
