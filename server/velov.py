@@ -10,7 +10,6 @@ import service
 from src.model import Velov
 
 #constants
-VELOV_DATA_SOURCE = "https://download.data.grandlyon.com/ws/rdata/jcd_jcdecaux.jcdvelov/all.json"
 
 #Prends en argument l'url du fichier json concernant les donnees de velov
 #ex: "https://download.data.grandlyon.com/ws/rdata/jcd_jcdecaux.jcdvelov/all.json"
@@ -58,7 +57,10 @@ def refreshVelovData(urlSource):
 	service.logMessage(".Velo'v is up to date")
 	
 #lance le rafraichissement periodique des donnees velov
+"""
 def start_velov_data(tempo = 60.0):
 	refreshVelovData(VELOV_DATA_SOURCE)
 	threading.Timer(tempo, start_velov_data, [tempo]).start()
+	service.logMessage("Sleep")
+"""
 	
