@@ -32,9 +32,10 @@ def index():
   return "Hi Bitches"
 
 #Affichage des différents marqueurs enregistrés
-@app.route('/pins/', methods=('GET', 'POST', 'PUT', 'DELETE'))
-@app.route('/pins/<category>/')
-def pins(category = None):
+@app.route('/pins/<rank>', methods=('GET', 'POST', 'PUT', 'DELETE'))
+@app.route('/pins/<idPin>/<rank>')
+@app.route('/pins/category/<category>/<rank>')
+def pins(idPin = None, category = None, rank = None):
   if request.method == "POST":
     return service.majPin(request.form)
 
@@ -50,14 +51,14 @@ def pins(category = None):
 
     return jsonify(deleted = "0")
 
-  return service.getAllPin(category)
+  if "/category/" not in request.path:
+    return service.getPinByIdOrAll(idPin, rank)
 
-@app.route('/pin/<idPin>/')
-def pin(idPin = None):
-  return service.getPinById(idPin)
+  return service.getPin(category, rank) #category pas indispensable
 
-@app.route('/user', methods=('GET', 'POST', 'PUT', 'DELETE'))
-@app.route('/user/<idUser>/')
+
+@app.route('/users', methods=('GET', 'POST', 'PUT', 'DELETE'))
+@app.route('/users/<idUser>/')
 def user(idUser = None):
 
   if request.method == "POST":
@@ -75,11 +76,12 @@ def user(idUser = None):
 
     return jsonify(deleted = "0")
 
-  return service.getAllUser(idUser)
+  return service.getAllUser(idUser) #ou un user par son id
 
 @app.route('/categories/', methods=('GET', 'POST', 'PUT', 'DELETE'))
-@app.route('/categories/<pin>/')
-def categories(pin = None):
+@app.route('/categories/<category>/')
+@app.route('/categories/pin/<pin>/')
+def categories(category = None, pin = None):
   if request.method == "POST":
     return service.majCategory(request.form)
 
@@ -95,48 +97,18 @@ def categories(pin = None):
 
     return jsonify(deleted = "0")
 
-  return service.getAllCategory(pin)
+  if "/pin/" not in request.path:
+    return service.getCategoryByNameOrAll(category)
 
-@app.route('/category/<category>/')
-def category(category = None):
-  return service.getCategoryById(category)
+  return service.getCategory(idPin)
+
 
 #renvoie l'id après l'authentification de l'utilisateur
-@app.route('/auth', methods=('GET', 'POST'))
+@app.route('/authentification', methods=('GET', 'POST'))
 def auth():
   if request.method == 'POST':
     return service.authentificaton(request.form)
   return jsonify(error="false request")
-
-#ajout d'un marqueur
-@app.route('/add/pin', methods=('GET', 'POST'))
-def addPin():
-  if request.method == 'POST':
-    return service.addPin(request.form)
-  return jsonify(error="false request")
-
-#inscription d'un utilisateur
-@app.route('/add/user', methods=('GET', 'POST'))
-def addUser():
-  if request.method == 'POST':
-    return service.addUser(request.form)
-  return jsonify(error="false request")
-
-@app.route('/delete/<obj>/<id>/')
-@app.route('/delete/<obj>/<id>/')
-@app.route('/delete/<obj>/<id>/')
-def delete(obj = None, id = None):
-  if (obj == "user"):
-    db.session.delete(User.query.get(id))
-  elif(obj == "pin"):
-    db.session.delete(Pin.query.get(id))
-  elif(obj == "category"):
-    db.session.delete(Category.query.get(id))
-  else:
-    return jsonify(retour = "0") #No object deleted
-
-  db.session.commit()
-  return jsonify(retour = "1") #object deleted
 
 
 #test
@@ -150,22 +122,23 @@ def test():
 def test2():
   print "0"
 
-  cat1 = Category.query.get(7)
+  cat1 = Category("&er","")
 
   print str(cat1.nom)
 
   
+  db.session.add(cat1)
 
   print "1"
   pun = Pin("1&er", 123, 134)
-
-  #cat1.pins.append(pun)
+  db.session.add(pun)
+  cat1.pins.append(pun)
 
   print "2"
-  #db.session.add(pun)
+
   print "3"
 
-  #db.session.commit()
+  db.session.commit()
 
   print "5"
 
@@ -182,6 +155,31 @@ def test3():
   print str(pin.categories)
 
   return pin.categories[0].id
+
+@app.route('/test4')
+def test4():
+  cat1 = Category("1","")
+  cat11= Category("11","")
+  cat12= Category("12","")
+
+  
+  
+
+  print cat1.nom
+  print cat11.nom
+
+  db.session.add(cat1)
+  db.session.add(cat11)
+  db.session.add(cat12)
+
+  cat12.categoryFather = cat1
+  cat1.categoriesChild.append(cat11)
+
+ 
+
+  db.session.commit()
+
+  return cat1.nom
 
 @app.route('/useer')
 def displaye():

@@ -14,7 +14,9 @@ def connectToDatabase():
 
 db = connectToDatabase()
 
-def getAllPin(idCategory):
+#---------------------------------------------------
+#--------------------------Pin----------------------
+def getPin(idCategory):
 	"""
 	request for all pins
 	"""
@@ -42,12 +44,43 @@ def getPinById(idPin):
 		print item.id
 
 		if item:
-			return jsonify(item.serialize())
+			return jsonify(pin = [item.serialize()])
 
 		return jsonify(error="No pin")
 
+	else:
+		items = Pin.query.all()
+		return jsonify(pins=[item.serialize() for item in items])
+
 	return jsonify(error = "Invalid parameters")
 
+def addPin(form):
+	print "addPin"
+	if (form['title'] and form['user'] and form['lng'] and form['lat']):
+		exist = Pin.query.filter_by(title=form['title'], lng=form['lng'], lat=form['lat']).first()
+		
+		if exist:
+			return jsonify(error="already exists")
+
+		user = User.query.get(form['user'])
+
+		if not(user):
+			return jsonify(error="user doesn't exist")
+		
+		#FAUX pin = Pin(form['title'], float(form['lng']), float(form['lat']), form['user'], form['category'], form['description'])
+	
+		db.session.add(form)
+		db.session.commit()
+		
+		return jsonify(pin = pin.serialize()) 
+		
+	return jsonify(error="invalid parameters")
+
+def majPin(form):
+	return "0"
+
+#---------------------------------------------------
+#--------------------------User---------------------
 def getAllUser(idUser):
 	print "getAllUser"
 
@@ -62,84 +95,7 @@ def getAllUser(idUser):
 	print "user vide"
 	return jsonify(error="No user")
 
-def getAllCategory(pin):
-	print "displayCategories"
-	#id de la pin
 
-	if pin:
-		pi = Pin.query.get(pin)
-		items = pi.categories
-	else:
-		items = Category.query.all()
-
-	if items :
-		print "categories non vide"
-		return jsonify(categories=[item.serialize() for item in items])
-
-	print "Category vide"
-	return jsonify(error="No category")
-
-def getCategoryById(category):
-	print "displayCategory"
-	if category:
-		item = Category.query.filter_by(nom=category).first()
-
-		print item.id
-
-		if item:
-			return jsonify(item.serialize())
-
-		return jsonify(error="No category")
-
-	return jsonify(error = "Invalid parameters")
-	
-
-
-
-
-	
-
-def authentification(form):
-	user = User.query.filter_by(pseudo=form['pseudo'], passw=form['passw']).first()
-	if user:
-		return jsonify(id=user.id, pseudo=user.pseudo)
-	return jsonify(error="authentification error")
-
-def addPin(form):
-	print "addPin"
-	"""if (form['title'] and form['user'] and form['lng'] and form['lat']):
-		exist = Pin.query.filter_by(title=form['title'], lng=form['lng'], lat=form['lat']).first()
-		
-		if exist:
-			return jsonify(error="already exists")
-
-		user = User.query.get(form['user'])
-
-		if not(user):
-			return jsonify(error="user doesn't exist")
-		
-		#FAUX pin = Pin(form['title'], float(form['lng']), float(form['lat']), form['user'], form['category'], form['description'])
-	"""	
-	db.session.add(form)
-	db.session.commit()
-		
-	#	return jsonify(pin = pin.serialize()) 
-		
-	#return jsonify(error="invalid parameters")
-	
-#updates or creates a velov 
-def updateVelovByIdVelov(current):
-	if current:
-		item = Velov.query.filter_by(idVelov=current.idVelov).first()
-		
-		if item:
-			item.velo = current.velo
-			item.libre = current.libre
-			db.session.commit()
-		else:
-			addPin(current)
-		
-			
 def addUser(form):
 	if (form['pseudo'] and form['passw']):
 
@@ -157,3 +113,75 @@ def addUser(form):
 		return jsonify(id=user.id, pseudo=user.pseudo)
 
 	return jsonify(error="invalid parameters")
+
+def majUser(form):
+	return "0"
+
+#---------------------------------------------------
+#--------------------------Category-----------------
+def getCategory(idPin, rank = 0):
+	print "displayCategories"
+	#id de la pin
+
+	if idPin:
+		pin = Pin.query.get(idPin)
+		if pin:
+			items = pin.categories
+		else:
+			return jsonify(categories=[])
+	else:
+		items = Category.query.all()
+		#items = Category.query.filter_by(rank > rank).all()
+
+	if items :
+		print "categories non vide"
+		return jsonify(categories=[item.serialize() for item in items])
+
+	print "Category vide"
+	return jsonify(error="No category")
+
+def getCategoryByName(category, rank = 0):
+	print "displayCategory"
+	if category:
+		item = Category.query.filter_by(nom=category).first()
+
+		if item:
+			return jsonify(categories=[item.serialize()])
+
+		return jsonify(error="No category")
+	else:
+		items = Category.query.all()
+		#items = Category.query.filter_by(rank > rank).all()
+
+	if items :
+		print "categories non vide"
+		return jsonify(categories=[item.serialize() for item in items])
+
+	return jsonify(error = "No Category")
+
+def majCategory(form):
+	return "0"
+	
+
+
+
+
+	
+
+def authentification(form):
+	user = User.query.filter_by(pseudo=form['pseudo'], passw=form['passw']).first()
+	if user:
+		return jsonify(id=user.id, pseudo=user.pseudo)
+	return jsonify(error="authentification error")
+	
+#updates or creates a velov 
+def updateVelovByIdVelov(current):
+	if current:
+		item = Velov.query.filter_by(idVelov=current.idVelov).first()
+		
+		if item:
+			item.velo = current.velo
+			item.libre = current.libre
+			db.session.commit()
+		else:
+			addPin(current)

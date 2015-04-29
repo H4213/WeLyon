@@ -9,8 +9,8 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import backref, relation
 
 app = Flask(__name__)
-#app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://tmucotknskzdvn:B5Hyna3G7I1xIhPj3i_CSdl-GS@ec2-54-163-238-96.compute-1.amazonaws.com:5432/d6fisokcj01ulm'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://H4213:SabreESS32@82.241.33.248:3306/WeLyon-preprod'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://tmucotknskzdvn:B5Hyna3G7I1xIhPj3i_CSdl-GS@ec2-54-163-238-96.compute-1.amazonaws.com:5432/d6fisokcj01ulm'
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://H4213:SabreESS32@82.241.33.248:3306/WeLyon-preprod'
 db = SQLAlchemy(app)
  
 ########################################################################
@@ -49,19 +49,27 @@ class Category(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     nom = db.Column(db.String(20))
     description = db.Column(db.String(20))
-    #categoryFather = db.Column(db.Integer, db.ForeignKey("categories.id"))
-    #categoriesChild = db.relationship('Category',lazy='dynamic')
+    IdCategoryFather = db.Column(db.Integer, db.ForeignKey("categories.id"))
+    categoryFather = db.relationship('Category', remote_side=[id], backref="categoriesChild")
 
     def __init__(self, nom, description):
         self.nom = nom
         self.description = description
 
     def serialize(self):
+        if self.categoriesChild:
+            return {
+                'id': self.id,
+                'nom': self.nom,
+                'description': self.description,
+                'pins' : [item.serializeSmall() for item in self.pins],
+                'Child': [item.serializeSmall() for item in self.categoriesChild]
+            }
         return {
             'id': self.id,
             'nom': self.nom,
             'description': self.description,
-            'pins' : [item.serializeSmall() for item in self.pins]
+            'pins' : [item.serializeSmall() for item in self.pins],
         }
 
     def serializeSmall(self):
@@ -120,7 +128,7 @@ class Pin(db.Model):
 
     __mapper_args__ = {
         'polymorphic_on':type,
-        'polymorphic_identity':'employee'
+        'polymorphic_identity':'pin'
     }
 
 class DynPin(Pin):
@@ -191,11 +199,8 @@ class Velov(Pin):
 
     __mapper_args__ = {
         'polymorphic_identity':'velov',
-		
-		
-		
     }
 
-
- 
+db.reflect()
+db.drop_all()
 db.create_all()
