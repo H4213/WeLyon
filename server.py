@@ -3,7 +3,7 @@
 
 #constants
 VELOV_DATA_SOURCE = "https://download.data.grandlyon.com/ws/rdata/jcd_jcdecaux.jcdvelov/all.json"
-VELOV_DATA_REFRESH_INTERVAL = 60.0
+VELOV_DATA_REFRESH_INTERVAL = 20
 
 import sys
 reload(sys)
@@ -157,12 +157,12 @@ def start_velov_data(tempo = 60.0):
 
 if __name__ == '__main__':
 	
-	print("[LOG] Démarrage du serveur")
+	service.logMessage("Démarrage du serveur")
 	#app.debug = True
-	app.run()
+	#app.run()
 	
 	
-	print("[LOG] Lancement du rafraichissement des donnees Velov")
+	service.logMessage("Lancement du rafraichissement des donnees Velov")
 	start_velov_data(VELOV_DATA_REFRESH_INTERVAL)
   #port = int(os.environ.get("PORT", 5000))
   #app.run(host='0.0.0.0', port=port)
