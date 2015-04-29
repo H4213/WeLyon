@@ -1,12 +1,7 @@
 from src import model
-<<<<<<< HEAD
-from src.model import User, Pin, Category, Velov, FacebookPin
-from flask import Flask, flash, render_template, request, session, jsonify
-=======
-from src.model import User, Pin, Category, Velov
+from src.model import User, Pin, Category, Velov , FacebookPin
 from flask import Flask, flash, render_template, request, session
 from flask.ext.jsonpify import jsonify
->>>>>>> origin/dev
 from flask.ext.sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker

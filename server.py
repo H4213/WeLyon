@@ -18,7 +18,6 @@ from flask.ext.sqlalchemy import SQLAlchemy
 from flask_jsglue import JSGlue
 from server import service
 
-
 import server
 from src.model import User, Pin, Category
 from server import velov
@@ -165,7 +164,8 @@ def start_refresh_thread():
 if __name__ == '__main__':
 
 	#app.debug = True
-	start_refresh_thread()
-	service.logMessage("Démarrage du serveur")
-	app.run()
+  load_facebook_event()
+  start_refresh_thread()
+  service.logMessage("Démarrage du serveur")
+  app.run()
 	
