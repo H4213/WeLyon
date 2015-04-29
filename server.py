@@ -32,23 +32,69 @@ def index():
   return "Hi Bitches"
 
 #Affichage des différents marqueurs enregistrés
-@app.route('/pins/')
+@app.route('/pins/', methods=('GET', 'POST', 'PUT', 'DELETE'))
 @app.route('/pins/<category>/')
 def pins(category = None):
+  if request.method == "POST":
+    return service.majPin(request.form)
+
+  if request.method == 'PUT':
+    return service.addPin(request.form)
+
+  if request.method == 'DELETE':
+    item = Pin.query.get(id)
+    if item:
+      db.session.delete(Pin.query.get(id))
+      db.session.commit()
+      return jsonify(deleted = "1")
+
+    return jsonify(deleted = "0")
+
   return service.getAllPin(category)
 
 @app.route('/pin/<idPin>/')
 def pin(idPin = None):
   return service.getPinById(idPin)
 
-@app.route('/user')
-def user():
-  print "user\n"
-  return service.getAllUser()
+@app.route('/user', methods=('GET', 'POST', 'PUT', 'DELETE'))
+@app.route('/user/<idUser>/')
+def user(idUser = None):
 
-@app.route('/categories/')
+  if request.method == "POST":
+    return service.majUser(request.form)
+
+  if request.method == 'PUT':
+    return service.addUser(request.form)
+
+  if request.method == 'DELETE':
+    item = User.query.get(id)
+    if item:
+      db.session.delete(User.query.get(id))
+      db.session.commit()
+      return jsonify(deleted = "1")
+
+    return jsonify(deleted = "0")
+
+  return service.getAllUser(idUser)
+
+@app.route('/categories/', methods=('GET', 'POST', 'PUT', 'DELETE'))
 @app.route('/categories/<pin>/')
 def categories(pin = None):
+  if request.method == "POST":
+    return service.majCategory(request.form)
+
+  if request.method == 'PUT':
+    return service.addCategory(request.form)
+
+  if request.method == 'DELETE':
+    item = Category.query.get(id)
+    if item:
+      db.session.delete(Category.query.get(id))
+      db.session.commit()
+      return jsonify(deleted = "1")
+
+    return jsonify(deleted = "0")
+
   return service.getAllCategory(pin)
 
 @app.route('/category/<category>/')
