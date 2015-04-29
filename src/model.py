@@ -9,8 +9,10 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import backref, relation
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://tmucotknskzdvn:B5Hyna3G7I1xIhPj3i_CSdl-GS@ec2-54-163-238-96.compute-1.amazonaws.com:5432/d6fisokcj01ulm'
-#app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://H4213:SabreESS32@82.241.33.248:3306/WeLyon-preprod'
+
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://tmucotknskzdvn:B5Hyna3G7I1xIhPj3i_CSdl-GS@ec2-54-163-238-96.compute-1.amazonaws.com:5432/d6fisokcj01ulm'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://H4213:SabreESS32@82.241.33.248:3306/WeLyon-dev'
+
 db = SQLAlchemy(app)
  
 ########################################################################
@@ -18,8 +20,8 @@ class User(db.Model):
 
     __tablename__ = "users"
     id = db.Column(db.Integer, primary_key = True)
-    pseudo = db.Column(db.String(20))
-    passw = db.Column(db.String(20))
+    pseudo = db.Column(db.String(50))
+    passw = db.Column(db.String(50))
 
     def __init__(self, username, passw):
         self.pseudo = username
@@ -51,6 +53,7 @@ class Category(db.Model):
     description = db.Column(db.String(20))
     IdCategoryFather = db.Column(db.Integer, db.ForeignKey("categories.id"))
     categoryFather = db.relationship('Category', remote_side=[id], backref="categoriesChild")
+
 
     def __init__(self, nom, description):
         self.nom = nom
@@ -87,12 +90,12 @@ class Category(db.Model):
 class Pin(db.Model):
     __tablename__ = 'pins'
     id = db.Column(db.Integer, primary_key = True)
-    type = db.Column(db.String(20))
+    type = db.Column(db.String(30))
     idUser = db.Column(db.Integer, db.ForeignKey("users.id"))
-    title = db.Column(db.String(20))
+    title = db.Column(db.String(100))
     categories = db.relationship("Category",
-                    secondary=association_table,
-                    backref="pins")
+                    secondary=association_table)
+					
     description = db.Column(db.String(400)) 
     lng = db.Column(db.Float)
     lat = db.Column(db.Float)
@@ -176,6 +179,7 @@ class Velov(Pin):
     def serialize(self):
         return {
             'id': self.id,
+            'type' : 'velov',
             'idVelov': self.idVelov,
             'user': self.idUser,
             'title': self.title,
@@ -198,9 +202,45 @@ class Velov(Pin):
         db.session.commit()
 
     __mapper_args__ = {
-        'polymorphic_identity':'velov',
+        'polymorphic_identity':'velov',	
     }
 
-db.reflect()
-db.drop_all()
+class FacebookPin(DynPin):
+    __tablename__ = 'facebookpins'
+
+    id = Column(db.Integer, db.ForeignKey('dynpins.id'), primary_key=True)
+    idFacebook = Column(db.BigInteger)
+
+    def serialize(self):
+        return {
+            'id': self.id,
+            'type' : 'facebook',
+            'idFacebook': self.idFacebook,
+            'user': self.idUser,
+            'title': self.title,
+            'category': [item.serializeSmall() for item in self.categories],
+            'description': self.description,
+            'lng': self.lng,
+            'lat': self.lat,
+        }
+
+    def serializeSmall(self):
+        return {
+            'id': self.id,
+            'title': self.title,
+        }
+        
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    __mapper_args__ = {
+        'polymorphic_identity':'facebook',
+        
+        
+        
+    }
+
+#db.reflect()
+#db.drop_all()
 db.create_all()

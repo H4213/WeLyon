@@ -1,23 +1,24 @@
-var URL = "http://jsonplaceholder.typicode.com/posts/1";
+var URL = "http://127.0.0.1:5000";
 
-function doGet (parameters)
+
+function doGetPins (parameters)
 {
-	var result = null;
 	$.ajax({
-		url : URL,
-		dataType : "json",
+		url : URL+parameters,
+		dataType : "jsonp",
 		method : "GET",
-		async : false,
-		data : parameters,
+		data : {},
 		success : function (data) {
 			console.log('Success');
-			result = data;
+			pins = data.pins;
+			pins.forEach(function(pin , index) {  	
+    			addMarker(pin);
+    		});
 		},
 		error : function () {
 			console.log('Error');
 		}
-	});
-	return result;	
+	});	
 }
 
 function doPost (parameters){

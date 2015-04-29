@@ -1,9 +1,16 @@
 from src import model
-from src.model import User, Pin, Category, Velov
-from flask import Flask, flash, render_template, request, session, jsonify
+from src.model import User, Pin, Category, Velov , FacebookPin
+from flask import Flask, flash, render_template, request, session
+from flask.ext.jsonpify import jsonify
 from flask.ext.sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+import time
+
+def logMessage(message):
+	print("[LOG]["+time.strftime("%H:%M:%S") + "] "+message)
+def errorMessage(message):
+	print("[ERROR]["+time.strftime("%H:%M:%S") + "] "+message)
 
 def connectToDatabase():
     """
@@ -20,19 +27,17 @@ def getPin(idCategory):
 	"""
 	request for all pins
 	"""
-	if (idCategory):
-		cat = Category.query.get(idCategory)
+	if (category):
+		cat = Category.query.get(category)
 		if cat:
 			items = cat.pins 
 		else:
 			items = []
 	else:
 		items = Pin.query.all()
-
 	if items:
 		print "Pins non vides"
 		return jsonify(pins=[item.serialize() for item in items])
-
 	print "pins vide"
 	return jsonify(error="No pins")
 
@@ -159,13 +164,30 @@ def getCategoryByName(category, rank = 0):
 
 	return jsonify(error = "No Category")
 
-def majCategory(form):
-	return "0"
+def addCategory(form):
+	if (Category(form['name'] and form['description'] and form['idFather']):
+
+		exist = Category.query.filter_by(nom=form['name']).first()
+
+		if exist:
+	
+			return jsonify(error="already exist")
+
+		item = Category(form['name'], form['description'])
+		father = Category.query.get(form['idFather'])
+		if father:
+			item.categoryFather = father
+			
+		db.session.add(item)
+		db.session.commit()
+
+		return jsonify(categories=[item.serialize()])
+
+	return jsonify(error="invalid parameters")
 	
 
-
-
-
+def majCategory(form):
+	return "0"
 	
 
 def authentification(form):
@@ -173,6 +195,7 @@ def authentification(form):
 	if user:
 		return jsonify(id=user.id, pseudo=user.pseudo)
 	return jsonify(error="authentification error")
+
 	
 #updates or creates a velov 
 def updateVelovByIdVelov(current):
@@ -184,4 +207,12 @@ def updateVelovByIdVelov(current):
 			item.libre = current.libre
 			db.session.commit()
 		else:
+			addPin(current)
+		
+#Creates Facebook events 
+def updateFacebookByIdFacebook(current):
+	if current:
+		item = FacebookPin.query.filter_by(idFacebook=current.idFacebook).first()
+		
+		if item == None:
 			addPin(current)

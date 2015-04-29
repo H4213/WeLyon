@@ -4,12 +4,12 @@
 		"selected_items":
 		[
 			[
-				"date",
-				"dateEnd"
+				"get",
+				"getCategory"
 			],
 			[
-				"categ",
-				"category"
+				"nom",
+				"nomCategory"
 			],
 			[
 				"ca",
@@ -17,7 +17,19 @@
 			],
 			[
 				"cat",
-				"cat11"
+				"category"
+			],
+			[
+				"a",
+				"append"
+			],
+			[
+				"date",
+				"dateEnd"
+			],
+			[
+				"categ",
+				"category"
 			],
 			[
 				"de",
@@ -116,18 +128,18 @@
 	"buffers":
 	[
 		{
-			"file": "server/service.py",
+			"file": "server.py",
 			"settings":
 			{
-				"buffer_size": 3074,
+				"buffer_size": 5726,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "server.py",
+			"file": "server/service.py",
 			"settings":
 			{
-				"buffer_size": 3212,
+				"buffer_size": 4203,
 				"line_ending": "Unix"
 			}
 		},
@@ -135,7 +147,15 @@
 			"file": "src/model.py",
 			"settings":
 			{
-				"buffer_size": 5552,
+				"buffer_size": 5940,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "README.md",
+			"settings":
+			{
+				"buffer_size": 1625,
 				"line_ending": "Unix"
 			}
 		}
@@ -164,6 +184,7 @@
 	},
 	"file_history":
 	[
+		"/home/leo/Documents/WeLyon/README.md",
 		"/home/leo/Documents/WeLyon/web/Test Html/JSON.html",
 		"/home/leo/Documents/WeLyon/server/model/modele.py",
 		"/home/leo/Documents/Smart-City/testUser.html",
@@ -224,6 +245,14 @@
 		"case_sensitive": true,
 		"find_history":
 		[
+			"display",
+			"jsonify",
+			"All",
+			"append",
+			"Cat",
+			"User",
+			"Pin",
+			"majPin",
 			"control",
 			"athegorie",
 			"marker",
@@ -330,50 +359,23 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 0,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "server/service.py",
-					"settings":
-					{
-						"buffer_size": 3074,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								803,
-								803
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Python/Python.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 1,
 					"file": "server.py",
 					"settings":
 					{
-						"buffer_size": 3212,
+						"buffer_size": 5726,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2121,
-								2121
+								2676,
+								2676
 							]
 						],
 						"settings":
@@ -383,7 +385,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 1989.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -395,19 +397,46 @@
 			"sheets":
 			[
 				{
-					"buffer": 2,
-					"file": "src/model.py",
+					"buffer": 1,
+					"file": "server/service.py",
 					"settings":
 					{
-						"buffer_size": 5552,
+						"buffer_size": 4203,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								5524,
-								5524
+								2200,
+								2200
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1173.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "src/model.py",
+					"settings":
+					{
+						"buffer_size": 5940,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4980,
+								4980
 							]
 						],
 						"settings":
@@ -417,7 +446,35 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 1967.0,
+						"translation.y": 2414.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "README.md",
+					"settings":
+					{
+						"buffer_size": 1625,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								508,
+								508
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Markdown/Markdown.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
