@@ -193,7 +193,6 @@ class Velov(Pin):
     __mapper_args__ = {
         'polymorphic_identity':'velov',	
     }
-<<<<<<< HEAD
 
 class FacebookPin(DynPin):
     __tablename__ = 'facebookpins'
@@ -231,7 +230,4 @@ class FacebookPin(DynPin):
         
     }
 
- 
-=======
->>>>>>> origin/dev
 db.create_all()

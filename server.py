@@ -22,12 +22,8 @@ from server import service
 import server
 from src.model import User, Pin, Category
 from server import velov
-<<<<<<< HEAD
 from server import facebookPin
 from server import service
-=======
-
->>>>>>> origin/dev
 
 
 
@@ -206,22 +202,9 @@ def displaye():
 def page_not_found(error):
     return jsonify(error="404"), 404
 	
-<<<<<<< HEAD
-def start_velov_data():
-	t = threading.Timer(60.0, velov.refreshVelovData, [VELOV_DATA_SOURCE])
-	t.start()
 
 def load_facebook_event():
   facebookPin.refreshFacebookData()
-
-if __name__ == '__main__':
-  load_facebook_event()
-  # app.debug = True
-  # app.run()
-
-  #port = int(os.environ.get("PORT", 5000))
-  #app.run(host='0.0.0.0', port=port)
-=======
 
 
 def refresh():
@@ -239,7 +222,3 @@ if __name__ == '__main__':
 	service.logMessage("Démarrage du serveur")
 	app.run()
 	
-
-	
-
->>>>>>> origin/dev
