@@ -41,14 +41,60 @@ function WeLyon(){
 
 	self.fillAuthentificationForm = function(bouton){
 		//TODO: remplissage du formulaire par rapport au bouton pressé
+		$("#incscriptionPanel").find(".panel-body").html("");
 		var form = '';
+		if(bouton.get(0) === $('#signinButton').get(0)){
+			form+='	   <form>';
+	        form+='        <div class="form-group">';
+	        form+='            <label for="inscrirePseudo">Pseudo</label>';
+	        form+='            <input type="text" class="form-control" id="inscrirePseudo" placeholder="pseudo">';
+	        form+='        </div>';
+	        form+='        <div class="form-group">';
+	        form+='            <label for="inscrireEmail">Email</label>';
+	        form+='            <input type="email" class="form-control" id="inscrireEmail" placeholder="Entrez votre email">';
+	        form+='        </div>';
+	        form+='        <div class="form-group">';
+	        form+='            <label for="inscrireMdP">Mot de Passe</label>';
+	        form+='           <input type="password" class="form-control" id="inscrireMdP" placeholder="Mot de Passe">';
+	        form+='        </div>';
+	        form+='        <div class="form-group">';
+	        form+='            <label for="confirmerMdP">Confirmer mot de passe</label>';
+	        form+='            <input type="password" class="form-control" id="confirmerMdP" placeholder="Confirmez votre mot de passe">';
+	        form+='        </div>';
+	        form+='        <button id="annulerInscription" class="btn btn-danger pull-left">Annuler</button>';
+	        form+='        <button  id="okInscription" class="btn btn-default pull-right">Sinscrire</button>';
+	        form+='    </form>';
+		}
+		else if(bouton.get(0) === $('#connectButton').get(0)){
+			form+='	   <form>';
+	        form+='        <div class="form-group">';
+	        form+='            <label for="inscrirePseudo">Pseudo</label>';
+	        form+='            <input type="text" class="form-control" id="inscrirePseudo" placeholder="pseudo">';
+	        form+='        </div>';
+	        form+='        <div class="form-group">';
+	        form+='            <label for="inscrireMdP">Mot de Passe</label>';
+	        form+='           <input type="password" class="form-control" id="inscrireMdP" placeholder="Mot de Passe">';
+	        form+='        </div>';
+	        form+='        <button id="annulerConnexion" class="btn btn-danger pull-left">Annuler</button>';
+	        form+='        <button  id="okConnexion" class="btn btn-default pull-right">Connexion</button>';
+	        form+='    </form>';
+		}
+
+		$("#incscriptionPanel").find(".panel-body").append(form);
 		self.setupAuthentificationPanel(bouton);
 	};
 
 	self.ouvrirPanelAuthentification = function(bouton){
-		// self.fillAuthentificationForm(bouton);		
-		bouton.toggleClass('active');
-		$('#incscriptionPanel').toggle();
+		if(bouton.hasClass('active')){
+			bouton.toggleClass('active');
+			$('#incscriptionPanel').toggle();
+		} else {
+			self.fillAuthentificationForm(bouton);
+			$('#nav').find('.active').toggleClass('active');
+			bouton.toggleClass('active');
+			$('#incscriptionPanel').show()
+		}
+		
 	};
 
 	self.gererVisibilite = function(bouton){		
