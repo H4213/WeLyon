@@ -82,7 +82,7 @@ class Pin(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     type = db.Column(db.String(30))
     idUser = db.Column(db.Integer, db.ForeignKey("users.id"))
-    title = db.Column(db.String(30))
+    title = db.Column(db.String(100))
     categories = db.relationship("Category",
                     secondary=association_table,
                     backref="pins")

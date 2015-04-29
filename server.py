@@ -3,13 +3,15 @@
 
 #constants
 VELOV_DATA_SOURCE = "https://download.data.grandlyon.com/ws/rdata/jcd_jcdecaux.jcdvelov/all.json"
-VELOV_DATA_REFRESH_INTERVAL = 20
+DATA_REFRESH_INTERVAL = 20
 
 import sys
 reload(sys)
 sys.setdefaultencoding("utf-8")
 
 import threading
+import thread
+import time
 import os
 from flask import Flask, flash, render_template, request, session, jsonify, send_file
 from flask.ext.sqlalchemy import SQLAlchemy
@@ -155,16 +157,21 @@ def page_not_found(error):
 	
 
 
+def refresh():
+	while 1:
+		velov.refreshVelovData(VELOV_DATA_SOURCE)
+		time.sleep(DATA_REFRESH_INTERVAL)
 
-
+def start_refresh_thread():
+	thread.start_new_thread (refresh, ())
 
 if __name__ == '__main__':
 
-	service.logMessage("Démarrage du serveur")
 	#app.debug = True
-	#app.run()
+	start_refresh_thread()
+	service.logMessage("Démarrage du serveur")
+	app.run()
 	
+
 	
-	service.logMessage("Lancement du rafraichissement des donnees Velov")
-	velov.start_velov_data(VELOV_DATA_REFRESH_INTERVAL)
 
