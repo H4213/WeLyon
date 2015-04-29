@@ -17,7 +17,15 @@
         <!-- <link href="components/bootstrap-3.3.4/css/bootstrap-theme.min.css" rel="stylesheet"> -->
         <!-- Custom styles for this template -->
         <link href="{{url_for('static', filename='./css/weLyon.css') }}" rel="stylesheet">
+        <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
+        {{ JSGlue.include() }}
+        <script src="{{url_for('static', filename='./js/mapManager.js') }}"></script>
+        <script src="{{url_for('static', filename='./js/util.js') }}"></script>
+        
     </head>
+    <script type="text/javascript">
+            google.maps.event.addDomListener(window, 'load', initMap); 
+    </script>
 
     <body role="document">
 
@@ -104,12 +112,6 @@
         <script src="{{url_for('static', filename='./js/jquery.js') }}"></script>
         <script src="{{url_for('static', filename='./components/bootstrap-3.3.4/js/bootstrap.min.js') }}"></script>    
           <!-- JavaScript inputs -->
-        <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
-        {{ JSGlue.include() }}
-        <script src="{{url_for('static', filename='./js/mapManager.js') }}"></script>
-        <script src="{{url_for('static', filename='./js/util.js') }}"></script>
-        <script type="text/javascript">
-            google.maps.event.addDomListener(window, 'load', initMap); 
-        </script>
+        
     </body>
 </html>
