@@ -1,9 +1,19 @@
 from src import model
+<<<<<<< HEAD
 from src.model import User, Pin, Category, Velov, FacebookPin
 from flask import Flask, flash, render_template, request, session, jsonify
+=======
+from src.model import User, Pin, Category, Velov
+from flask import Flask, flash, render_template, request, session
+from flask.ext.jsonpify import jsonify
+>>>>>>> origin/dev
 from flask.ext.sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+import time
+
+def logMessage(message):
+	print("[LOG]["+time.strftime("%H:%M:%S") + "] "+message)
 
 def connectToDatabase():
     """
@@ -26,11 +36,9 @@ def getAllPin(category):
 			items = []
 	else:
 		items = Pin.query.all()
-
 	if items:
 		print "Pins non vides"
 		return jsonify(pins=[item.serialize() for item in items])
-
 	print "pins vide"
 	return jsonify(error="No pins")
 
@@ -48,7 +56,7 @@ def getPinById(idPin):
 
 	return jsonify(error = "Invalid parameters")
 
-def getAllUser():
+def getAllUser(idUser):
 	print "getAllUser"
 
 	items = User.query.all()
@@ -94,11 +102,6 @@ def getCategoryById(category):
 	return jsonify(error = "Invalid parameters")
 	
 
-
-
-
-	
-
 def authentification(form):
 	user = User.query.filter_by(pseudo=form['pseudo'], passw=form['passw']).first()
 	if user:
@@ -106,7 +109,6 @@ def authentification(form):
 	return jsonify(error="authentification error")
 
 def addPin(form):
-	print "addPin"
 	"""if (form['title'] and form['user'] and form['lng'] and form['lat']):
 		exist = Pin.query.filter_by(title=form['title'], lng=form['lng'], lat=form['lat']).first()
 		
