@@ -48,6 +48,20 @@ def createFacebookTable() :
 	i=-1
 	listFacebook =[]
 	nbIter = nbEvent-1
+	
+	#add categorie (creates if not exists)
+	categorie = Category.query.filter_by(nom = "Facebook Event").first()
+	
+	if not(categorie):
+		init_databases.init_categories()
+		categorie = Category.query.filter_by(nom = "Facebook Event").first()
+		
+	#add admin (creates if not exists)
+	admin_user = User.query.filter_by(pseudo="admin").first()
+	if admin_user==None:
+		init_databases.init_admin_user()
+		admin_user = User.query.filter_by(pseudo="admin").first()
+		
 	while i < nbIter:
 		
 		i+=1
@@ -76,17 +90,16 @@ def createFacebookTable() :
 								 end_time = 'currentTime'
 							#image=graph.request(idEvent+'/picture?redirect=false')
 							#linkpicture=image['data']['url']
-							idUser=1
 
-							obj = FacebookPin(title, longitude, latitude, idUser, [], description)
+							obj = FacebookPin(title, longitude, latitude, admin_user.id, [categorie], description)
 							obj.dateBegin = start_time
 							obj.dateEnd = end_time
 							obj.idFacebook = idEvent
 							listFacebook.append(obj)
-							print("Ok")
+							#print("Ok")
 
 		except (requests.ConnectionError , urllib2.URLError):
-			print ("ConnectionError")
+			service.errorMessage ("ConnectionError")
 		
 			
 
@@ -95,14 +108,10 @@ def createFacebookTable() :
 
 def refreshFacebookData():
 	list = createFacebookTable()
-	print("[LOG] Updating the database")
+	service.logMessage(".Updating the database")
 	for v in list:
 		service.updateFacebookByIdFacebook(v)
-	print("[LOG] Facebook Pins are up to date")
-
-
-
-
+	service.logMessage(".Facebook  is up to date")
 
 
 

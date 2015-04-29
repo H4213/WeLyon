@@ -36,7 +36,7 @@ def createVelovTable(urlSource) :
 		init_databases.init_admin_user()
 		admin_user = User.query.filter_by(pseudo="admin").first()
 		
-	for i in  range(0, 100):
+	for i in  range(0, 10):
 	#data["nb_results"]	
 		title = "Velov de " + data["values"][i][2]
 		if data["values"][i][11]=="OPEN":
