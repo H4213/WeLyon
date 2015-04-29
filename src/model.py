@@ -191,12 +191,6 @@ class Velov(Pin):
         db.session.commit()
 
     __mapper_args__ = {
-        'polymorphic_identity':'velov',
-		
-		
-		
+        'polymorphic_identity':'velov',	
     }
-
-
- 
 db.create_all()
