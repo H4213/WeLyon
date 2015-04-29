@@ -20,7 +20,7 @@ def createFacebookTable() :
 	# payload = {'grant_type': 'client_credentials', 'client_id': FACEBOOK_APP_ID, 'client_secret': FACEBOOK_APP_SECRET }
 	# file = requests.post('https://graph.facebook.com/oauth/access_token?', params = payload)
 	# #print file.text #to test what the FB api responded with    
-	token = 'CAACEdEose0cBALvmV9HpdEt3LjuajMwGZC5YU2psFqAGxHACDETMBKqi3KY7yZAVzyXgYvcnZCpLwuxkAHECALB6yHoaScthtoldSknu3hXAdrfpVMZALbCQEm8zZAZBY67UZCoEE1pkS7iuCuk86WmhCAIDqCkdjATsKF2fpy0A6Lv1feV4um3RlaeDZBq9KnCbJaGqMIcaHsizH6q9zgfZB'
+	token = 'CAACEdEose0cBAKpzSWaR0KzdW4ZCzMGJ56ZCBM3OehDhcikUmxYqUKJyAwMkKxQ3t5n3hu0yutvBsjmvu9SkeoNdnxaRQbs1WJKQ0r8oiSZBQIT8vpqSitUljKZC2DT9Kj5Rmo9WsSLZAZBd27QS752fRhJWCrOnhmQ4VUh34o5uxAfZBzob9pHZCQ9cZCtosvx30wuPqHZC52Ex0h9FZBR2K68'
 
 
 	# # Trying to get an access token. Very awkward.
