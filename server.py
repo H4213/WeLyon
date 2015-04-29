@@ -14,7 +14,7 @@ from flask import Flask, flash, render_template, request, session, jsonify
 from flask.ext.sqlalchemy import SQLAlchemy
 
 from server import velov
-
+from server import facebookPin
 from server import service
 
 from src.model import User, Pin, Category
@@ -150,10 +150,14 @@ def page_not_found(error):
 def start_velov_data():
 	t = threading.Timer(60.0, velov.refreshVelovData, [VELOV_DATA_SOURCE])
 	t.start()
-	
+
+def load_facebook_event():
+  facebookPin.refreshFacebookData()
 
 if __name__ == '__main__':
-  app.debug = True
-  app.run()
+  load_facebook_event()
+  # app.debug = True
+  # app.run()
+
   #port = int(os.environ.get("PORT", 5000))
   #app.run(host='0.0.0.0', port=port)

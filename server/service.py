@@ -1,5 +1,5 @@
 from src import model
-from src.model import User, Pin, Category, Velov
+from src.model import User, Pin, Category, Velov, FacebookPin
 from flask import Flask, flash, render_template, request, session, jsonify
 from flask.ext.sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine
@@ -139,7 +139,14 @@ def updateVelovByIdVelov(current):
 		else:
 			addPin(current)
 		
-			
+#Creates Facebook events 
+def updateFacebookByIdFacebook(current):
+	if current:
+		item = FacebookPin.query.filter_by(idFacebook=current.idFacebook).first()
+		
+		if item == None:
+			addPin(current)
+
 def addUser(form):
 	if (form['pseudo'] and form['passw']):
 
