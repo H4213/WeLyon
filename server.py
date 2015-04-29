@@ -3,7 +3,7 @@
 
 #constants
 VELOV_DATA_SOURCE = "https://download.data.grandlyon.com/ws/rdata/jcd_jcdecaux.jcdvelov/all.json"
-VELOV_DATA_REFRESH_INTERVAL = 60.0
+VELOV_DATA_REFRESH_INTERVAL = 20
 
 import sys
 reload(sys)
@@ -28,9 +28,9 @@ db = service.connectToDatabase()
 def index():
   return render_template("index.html")
 
-@app.route("/images/<file>")
+@app.route("/assests/<file>")
 def file (file) : 
-  return send_file("./static/images/" + file , mimetype='image/gif')
+  return send_file("./static/assests/" + file , mimetype='image/gif')
 
 #Affichage des différents marqueurs enregistrés
 @app.route('/pins/')
@@ -156,10 +156,14 @@ def start_velov_data(tempo = 60.0):
 	velov.refreshVelovData(VELOV_DATA_SOURCE)
 	threading.Timer(tempo, start_velov_data, [tempo]).start()
 
-	
-#start_velov_data();
 
 if __name__ == '__main__':
 
-  app.debug = True
-  app.run()
+	service.logMessage("Démarrage du serveur")
+	#app.debug = True
+	app.run()
+	
+	
+	service.logMessage("Lancement du rafraichissement des donnees Velov")
+	start_velov_data(VELOV_DATA_REFRESH_INTERVAL)
+

@@ -5,13 +5,13 @@ var map; // object containing the map
 var cordinateLyon = new google.maps.LatLng(45.7601676, 4.8328885);
 
 // image de marker
-var imageNormal = './images/normal.png';
-var imageVelov = './images/velov.png';
-var imageBar = './images/bar.png';
-var imageSoiree = './images/soiree.png';
-var imageRestau = './images/restau.png';
-var imageHotel = './images/hotel.png';
-var imageMonument = './images/monument.png';
+var imageNormal = Flask.url_for("static", {"filename": "./static/assets/normal.png"});
+var imageVelov = Flask.url_for("static", {"filename": "./static/assets/velov.png"});
+var imageBar =  Flask.url_for("static", {"filename": "./static/assets/bar.png"});
+var imageSoiree =Flask.url_for("static", {"filename": "./static/assets/soiree.png"});
+var imageRestau = Flask.url_for("static", {"filename": "./static/assets/restau.png"});
+var imageHotel = Flask.url_for("static", {"filename": "./static/assets/hotel.png"});
+var imageMonument = Flask.url_for("static", {"filename": "./static/assets/monument.png"});
 
 function initMap() {
 	 var mapOptions = {
@@ -21,7 +21,7 @@ function initMap() {
     map = new google.maps.Map(document.getElementById('map-canvas'),
     							mapOptions);
 
-    doGet("/pins/");
+    doGetPins("/pins/");
 }
  
 
@@ -134,4 +134,6 @@ function addMarker(aPin) {
 	markers.push({pin : aPin,
 					marker : aMarker})
 }
+
+google.maps.event.addDomListener(window, 'load', initMap); 
 

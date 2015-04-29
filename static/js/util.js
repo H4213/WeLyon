@@ -1,7 +1,7 @@
 var URL = "http://127.0.0.1:5000";
 
 
-function doGet (parameters)
+function doGetPins (parameters)
 {
 	$.ajax({
 		url : URL+parameters,
