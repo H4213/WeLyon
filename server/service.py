@@ -51,7 +51,7 @@ def getPinById(idPin):
 
 	return jsonify(error = "Invalid parameters")
 
-def getAllUser():
+def getAllUser(idUser):
 	print "getAllUser"
 
 	items = User.query.all()

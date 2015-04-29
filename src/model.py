@@ -50,7 +50,6 @@ class Category(db.Model):
     nom = db.Column(db.String(20))
     description = db.Column(db.String(20))
     #categoryFather = db.Column(db.Integer, db.ForeignKey("categories.id"))
-    #pins = db.relationship('Pin', backref='categories',lazy='dynamic')
     #categoriesChild = db.relationship('Category',lazy='dynamic')
 
     def __init__(self, nom, description):
