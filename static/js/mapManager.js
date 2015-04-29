@@ -20,8 +20,8 @@ function initMap() {
     };
     map = new google.maps.Map(document.getElementById('map'),
     							mapOptions);
-
-    doGetPins("/pins/");
+    refreshPins();
+    setInterval(refreshPins, 60000 );
 }
  
 
@@ -41,6 +41,7 @@ function addMarker(aPin) {
 				'<div id="bodyContent">'+
 				'<p> ------DESCRIPTION DE LA STATION DE VELO\'V------ </p>'+
 				'</div>'+
+				aPin.libre +
 				'</div>';
 			break;
 		case "bar" : 
@@ -136,4 +137,12 @@ function addMarker(aPin) {
 }
 
 
-
+function refreshPins () 
+{
+	for (var i = 0; i < markers.length; i++) {
+    	markers[i].marker.setMap(null);
+  	}
+	pins = [];
+	markers = [];
+	doGetPins("/pins/");
+}

@@ -1,2 +1,11 @@
 *.pyc
 server/service.pyc
+*.pyc
+*.pyc
+server/*.pyc
+*.pyc
+src/__init__.pyc
+static/js/ll.js
+server/service.pyc
+src/model.pyc
+server/facebookPin.pyc

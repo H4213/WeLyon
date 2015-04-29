@@ -164,7 +164,6 @@ def start_refresh_thread():
 	thread.start_new_thread (refresh, ())
 
 if __name__ == '__main__':
-
   init_databases.init_all()
   start_refresh_thread()
   service.logMessage("Démarrage du serveur")
