@@ -23,6 +23,7 @@ from src.model import User, Pin, Category
 from server import velov
 from server import facebookPin
 from server import service
+from server import init_databases
 
 
 
@@ -154,6 +155,7 @@ def load_facebook_event():
   facebookPin.refreshFacebookData()
 
 def refresh():
+	#load_facebook_event()
 	while 1:
 		velov.refreshVelovData(VELOV_DATA_SOURCE)
 		time.sleep(DATA_REFRESH_INTERVAL)
@@ -163,8 +165,7 @@ def start_refresh_thread():
 
 if __name__ == '__main__':
 
-	#app.debug = True
-  #load_facebook_event()
+  init_databases.init_all()
   start_refresh_thread()
   service.logMessage("Démarrage du serveur")
   app.run()

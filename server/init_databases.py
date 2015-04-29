@@ -27,9 +27,11 @@ def try_push_category(name, descr):
 		service.addCategory(c)
 		
 def init_categories():
+	service.logMessage("Creation des categories")
 	try_push_category("Velo'v", "les stations velo'v")
 	try_push_category("Facebook Event", "Un evenenement facebook")
 	
+def init_all():
 	
-init_admin_user()
-init_categories();
+	init_admin_user()
+	init_categories();
