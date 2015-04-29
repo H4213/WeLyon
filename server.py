@@ -214,11 +214,8 @@ def start_refresh_thread():
 if __name__ == '__main__':
 
 	#app.debug = True
-<<<<<<< HEAD
-=======
 	start_refresh_thread()
 	service.logMessage("Démarrage du serveur")
->>>>>>> origin/dev-velov
 	app.run()
 	
 
