@@ -10,9 +10,9 @@ sys.setdefaultencoding("utf-8")
 
 import threading
 import os
-from flask import Flask, flash, render_template, request, session, jsonify
+from flask import Flask, flash, render_template, request, session, jsonify, send_file
 from flask.ext.sqlalchemy import SQLAlchemy
-
+from flask_jsglue import JSGlue
 from server import velov
 
 from server import service
@@ -20,16 +20,16 @@ from server import service
 from src.model import User, Pin, Category
 
 app = Flask(__name__)
+jsglue = JSGlue(app)
 db = service.connectToDatabase()
 
-@app.route('/', methods=('GET', 'POST'))
+@app.route("/")
 def index():
-  record = Pin.query.first()
-  if record:
-    print "test1"
-  else:
-    print "sdqg"
-  return "Hi Bitches"
+  return render_template("index.html")
+
+@app.route("/images/<file>")
+def file (file) : 
+  return send_file("./static/images/" + file , mimetype='image/gif')
 
 #Affichage des différents marqueurs enregistrés
 @app.route('/pins/')
@@ -93,6 +93,7 @@ def delete(obj = None, id = None):
   return jsonify(retour = "1") #object deleted
 
 
+
 #test
 @app.route('/test', methods=('GET', 'POST'))
 def test():
@@ -148,12 +149,15 @@ def page_not_found(error):
     return jsonify(error="404"), 404
 	
 def start_velov_data():
-	t = threading.Timer(60.0, velov.refreshVelovData, [VELOV_DATA_SOURCE])
-	t.start()
+  print("Refresh velov data")
+  t = threading.Timer(60.0, velov.refreshVelovData, [VELOV_DATA_SOURCE])
+  t.start()
 	
+#start_velov_data();
 
 if __name__ == '__main__':
   app.debug = True
   app.run()
+
   #port = int(os.environ.get("PORT", 5000))
   #app.run(host='0.0.0.0', port=port)
