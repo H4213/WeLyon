@@ -1,10 +1,7 @@
 from src import model
-<<<<<<< HEAD
 
-from src.model import User, Pin, Category, Velov
-=======
-from src.model import User, Pin, Category, Velov , FacebookPin
->>>>>>> 1b97d05d497e93a3389538f721106dc23974ce93
+from src.model import User, Pin, Category, Velov , FacebookPin , Vote
+
 from flask import Flask, flash, render_template, request, session
 from flask.ext.jsonpify import jsonify
 from flask.ext.sqlalchemy import SQLAlchemy
@@ -56,10 +53,24 @@ def getPinById(idPin):
 
 	return jsonify(error = "Invalid parameters")
 
-def getAllUser(idUser):
+def getAllUser():
 	print "getAllUser"
 
 	items = User.query.all()
+
+	print "query faite"
+
+	if items :
+		print "users non vide"
+		return jsonify(users=[item.serialize() for item in items])
+
+	print "user vide"
+	return jsonify(error="No user")
+
+def getUserById(idUser):
+
+
+	items = User.query.filter_by(id)
 
 	print "query faite"
 
@@ -87,10 +98,10 @@ def getAllCategory(pin):
 	print "Category vide"
 	return jsonify(error="No category")
 
-def getCategoryById(category):
+def getCategoryByName(categoryName):
 	print "displayCategory"
-	if category:
-		item = Category.query.filter_by(nom=category).first()
+	if categoryName:
+		item = Category.query.filter_by(nom=categoryName).first()
 
 		print item.id
 
@@ -108,7 +119,7 @@ def authentification(form):
 		return jsonify(id=user.id, pseudo=user.pseudo)
 	return jsonify(error="authentification error")
 
-def addPin(form):
+def addPin(pinToAdd):
 	"""if (form['title'] and form['user'] and form['lng'] and form['lat']):
 		exist = Pin.query.filter_by(title=form['title'], lng=form['lng'], lat=form['lat']).first()
 		
@@ -122,7 +133,7 @@ def addPin(form):
 		
 		#FAUX pin = Pin(form['title'], float(form['lng']), float(form['lat']), form['user'], form['category'], form['description'])
 	"""	
-	db.session.add(form)
+	db.session.add(pinToAdd)
 	db.session.commit()
 		
 	#	return jsonify(pin = pin.serialize()) 
@@ -166,3 +177,27 @@ def addUser(form):
 		return jsonify(id=user.id, pseudo=user.pseudo)
 
 	return jsonify(error="invalid parameters")
+
+def UpdateUserVoteEvent(idUser,posneg,idPin):
+
+	if idUser and idPin and posneg:
+		item = Vote.query.filter_by(idUser=idUser, idPin=idPin).first()
+		if item:
+
+			if item.posneg != posneg:
+				item.posneg ==posneg
+				db.session.commit()
+
+		else:
+			
+			newVote=Vote(idUser,idPin)
+			newVote.posneg=posneg
+			db.session.add(newVote)
+			db.session.commit()
+
+
+
+
+		# elif posneg>0:
+		# elif posneg<0:
+		

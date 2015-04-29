@@ -10,7 +10,7 @@ from sqlalchemy.orm import backref, relation
 
 app = Flask(__name__)
 #app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://tmucotknskzdvn:B5Hyna3G7I1xIhPj3i_CSdl-GS@ec2-54-163-238-96.compute-1.amazonaws.com:5432/d6fisokcj01ulm'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://H4213:SabreESS32@82.241.33.248:3306/WeLyon-preprod'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://H4213:SabreESS32@82.241.33.248:3306/WeLyon-paul'
 db = SQLAlchemy(app)
  
 ########################################################################
@@ -20,7 +20,6 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     pseudo = db.Column(db.String(20))
     passw = db.Column(db.String(20))
-
     def __init__(self, username, passw):
         self.pseudo = username
         self.passw = passw
@@ -88,7 +87,7 @@ class Pin(db.Model):
     description = db.Column(db.String(400)) 
     lng = db.Column(db.Float)
     lat = db.Column(db.Float)
-
+    
     def __init__(self, title, lng, lat, idUser = 1, categories = [], description = ""):
         self.idUser = idUser
         self.title = title
@@ -225,9 +224,30 @@ class FacebookPin(DynPin):
 
     __mapper_args__ = {
         'polymorphic_identity':'facebook',
-        
-        
-        
+            
     }
+
+class Vote(db.Model):
+    __tablename__ = "votes"
+    id= db.Column(db.Integer, primary_key = True)
+    idUser= db.Column(db.Integer,db.ForeignKey('users.id'))
+    idPin = db.Column(db.Integer,db.ForeignKey('pins.id'))
+    posneg = db.Column(db.Integer)
+    
+    def __init__(self, idUser, idPin, posneg=0):
+        self.idUser = idUser
+        self.idPin  = idPin
+
+    def serialize(self):
+        return {
+            'id': self.id,
+            'idUser': self.idUser,
+            'idPin': self.idPin,
+        }
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
 
 db.create_all()

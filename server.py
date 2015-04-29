@@ -164,8 +164,9 @@ def start_refresh_thread():
 if __name__ == '__main__':
 
 	#app.debug = True
-  load_facebook_event()
+  #load_facebook_event()
   start_refresh_thread()
   service.logMessage("Démarrage du serveur")
+  service.UpdateUserVoteEvent(1,1,2)
   app.run()
 	
