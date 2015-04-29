@@ -1,5 +1,5 @@
 from src import model
-from src.model import User, Pin, Category
+from src.model import User, Pin, Category, Velov
 from flask import Flask, flash, render_template, request, session, jsonify
 from flask.ext.sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine
@@ -92,6 +92,8 @@ def getCategoryById(category):
 		return jsonify(error="No category")
 
 	return jsonify(error = "Invalid parameters")
+	
+
 
 
 
@@ -105,7 +107,7 @@ def authentification(form):
 
 def addPin(form):
 	print "addPin"
-	if (form['title'] and form['user'] and form['lng'] and form['lat']):
+	"""if (form['title'] and form['user'] and form['lng'] and form['lat']):
 		exist = Pin.query.filter_by(title=form['title'], lng=form['lng'], lat=form['lat']).first()
 		
 		if exist:
@@ -117,14 +119,27 @@ def addPin(form):
 			return jsonify(error="user doesn't exist")
 		
 		#FAUX pin = Pin(form['title'], float(form['lng']), float(form['lat']), form['user'], form['category'], form['description'])
+	"""	
+	db.session.add(form)
+	db.session.commit()
 		
-		db.session.add(pin)
-		db.session.commit()
+	#	return jsonify(pin = pin.serialize()) 
 		
-		return jsonify(pin = pin.serialize()) 
+	#return jsonify(error="invalid parameters")
+	
+#updates or creates a velov 
+def updateVelovByIdVelov(current):
+	if current:
+		item = Velov.query.filter_by(idVelov=current.idVelov).first()
 		
-	return jsonify(error="invalid parameters")
-
+		if item:
+			item.velo = current.velo
+			item.libre = current.libre
+			db.session.commit()
+		else:
+			addPin(current)
+		
+			
 def addUser(form):
 	if (form['pseudo'] and form['passw']):
 
