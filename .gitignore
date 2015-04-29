@@ -1,2 +1,4 @@
 *.pyc
 server/service.pyc
+*.pyc
+*.pyc
