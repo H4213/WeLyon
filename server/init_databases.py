@@ -30,6 +30,7 @@ def try_push_category(name, descr):
 def init_categories():
 	service.logMessage("Creation des categories")
 	try_push_category("Velo'v", "les stations velo'v")
+	try_push_category("Facebook Event", "Un evenenement facebook")
 	try_push_category("Bar", "Bar")
 	try_push_category("Restaurant", "Bar")
 	try_push_category("Hotel", "Hotel/Motel")
