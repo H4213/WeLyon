@@ -14,11 +14,15 @@ import os
 from flask import Flask, flash, render_template, request, session, jsonify, send_file
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask_jsglue import JSGlue
-from server import velov
-
 from server import service
 
+
+import server
 from src.model import User, Pin, Category
+from server import velov
+
+
+
 
 app = Flask(__name__)
 jsglue = JSGlue(app)
@@ -151,10 +155,7 @@ def page_not_found(error):
 	
 
 
-#lance le rafraichissement periodique des données velov
-def start_velov_data(tempo = 60.0):
-	velov.refreshVelovData(VELOV_DATA_SOURCE)
-	threading.Timer(tempo, start_velov_data, [tempo]).start()
+
 
 
 if __name__ == '__main__':
@@ -165,5 +166,5 @@ if __name__ == '__main__':
 	
 	
 	service.logMessage("Lancement du rafraichissement des donnees Velov")
-	start_velov_data(VELOV_DATA_REFRESH_INTERVAL)
+	velov.start_velov_data(VELOV_DATA_REFRESH_INTERVAL)
 

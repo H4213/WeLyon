@@ -61,4 +61,5 @@ def refreshVelovData(urlSource):
 def start_velov_data(tempo = 60.0):
 	refreshVelovData(VELOV_DATA_SOURCE)
 	threading.Timer(tempo, start_velov_data, [tempo]).start()
+	service.logMessage("Sleep")
 	
