@@ -146,9 +146,6 @@ def delete(obj = None, id = None):
   return jsonify(retour = "1") #object deleted
 
 
-
-
-
 def refresh():
 	while 1:
 		velov.refreshVelovData(VELOV_DATA_SOURCE)
