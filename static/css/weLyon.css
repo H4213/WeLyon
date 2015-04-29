@@ -2,7 +2,7 @@
 	padding: 0;
 }
 
-#signinButton.active,   #signinButton:hover{
+#signinButton.active, #signinButton:hover{
     background-color:#0BAA16;
     color: white;
 }

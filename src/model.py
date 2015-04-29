@@ -50,7 +50,6 @@ class Category(db.Model):
     nom = db.Column(db.String(20))
     description = db.Column(db.String(20))
     #categoryFather = db.Column(db.Integer, db.ForeignKey("categories.id"))
-    #pins = db.relationship('Pin', backref='categories',lazy='dynamic')
     #categoriesChild = db.relationship('Category',lazy='dynamic')
 
     def __init__(self, nom, description):
@@ -80,9 +79,9 @@ class Category(db.Model):
 class Pin(db.Model):
     __tablename__ = 'pins'
     id = db.Column(db.Integer, primary_key = True)
-    type = db.Column(db.String(20))
+    type = db.Column(db.String(30))
     idUser = db.Column(db.Integer, db.ForeignKey("users.id"))
-    title = db.Column(db.String(20))
+    title = db.Column(db.String(100))
     categories = db.relationship("Category",
                     secondary=association_table,
                     backref="pins")
@@ -169,6 +168,7 @@ class Velov(Pin):
     def serialize(self):
         return {
             'id': self.id,
+            'type' : 'velov',
             'idVelov': self.idVelov,
             'user': self.idUser,
             'title': self.title,
@@ -191,12 +191,43 @@ class Velov(Pin):
         db.session.commit()
 
     __mapper_args__ = {
-        'polymorphic_identity':'velov',
-		
-		
-		
+        'polymorphic_identity':'velov',	
     }
 
+class FacebookPin(DynPin):
+    __tablename__ = 'facebookpins'
 
- 
+    id = Column(db.Integer, db.ForeignKey('dynpins.id'), primary_key=True)
+    idFacebook = Column(db.BigInteger)
+
+    def serialize(self):
+        return {
+            'id': self.id,
+            'type' : 'facebook',
+            'idFacebook': self.idFacebook,
+            'user': self.idUser,
+            'title': self.title,
+            'category': [item.serializeSmall() for item in self.categories],
+            'description': self.description,
+            'lng': self.lng,
+            'lat': self.lat,
+        }
+
+    def serializeSmall(self):
+        return {
+            'id': self.id,
+            'title': self.title,
+        }
+        
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    __mapper_args__ = {
+        'polymorphic_identity':'facebook',
+        
+        
+        
+    }
+
 db.create_all()

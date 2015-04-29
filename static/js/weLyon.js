@@ -2,7 +2,8 @@ function WeLyon(){
 	var self = this;
 
 	self.setup = function(){
-		google.maps.event.addDomListener(window, 'load', self.initializeMap);
+		// google.maps.event.addDomListener(window, 'load', self.initializeMap);
+		// google.maps.event.addDomListener(window, 'load', initMap)
 
 		$('#categoryButton').on('click',function(){
 			self.toggleCategories();

@@ -1,48 +1,108 @@
 #! /usr/bin/python
 # -*- coding:utf-8 -*-
 
+#constants
+VELOV_DATA_SOURCE = "https://download.data.grandlyon.com/ws/rdata/jcd_jcdecaux.jcdvelov/all.json"
+DATA_REFRESH_INTERVAL = 20
+
 import sys
 reload(sys)
 sys.setdefaultencoding("utf-8")
 
+import threading
+import thread
+import time
 import os
-from flask import Flask, flash, render_template, request, session, jsonify
+from flask import Flask, flash, render_template, request, session, jsonify, send_file
 from flask.ext.sqlalchemy import SQLAlchemy
-
+from flask_jsglue import JSGlue
 from server import service
 
+
+import server
 from src.model import User, Pin, Category
+from server import velov
+from server import facebookPin
+from server import service
+
+
 
 app = Flask(__name__)
+jsglue = JSGlue(app)
 db = service.connectToDatabase()
 
-@app.route('/', methods=('GET', 'POST'))
+@app.route("/")
 def index():
-  record = Pin.query.first()
-  if record:
-    print "test1"
-  else:
-    print "sdqg"
-  return "Hi Bitches"
+  return render_template("index.html")
+
+@app.route("/assests/<file>")
+def file (file) : 
+  return send_file("./static/assests/" + file , mimetype='image/gif')
 
 #Affichage des différents marqueurs enregistrés
-@app.route('/pins/')
+@app.route('/pins/', methods=('GET', 'POST', 'PUT', 'DELETE'))
 @app.route('/pins/<category>/')
 def pins(category = None):
+  if request.method == "POST":
+    return service.majPin(request.form)
+
+  if request.method == 'PUT':
+    return service.addPin(request.form)
+
+  if request.method == 'DELETE':
+    item = Pin.query.get(id)
+    if item:
+      db.session.delete(Pin.query.get(id))
+      db.session.commit()
+      return jsonify(deleted = "1")
+
+    return jsonify(deleted = "0")
+
   return service.getAllPin(category)
 
 @app.route('/pin/<idPin>/')
 def pin(idPin = None):
   return service.getPinById(idPin)
 
-@app.route('/user')
-def user():
-  print "user\n"
-  return service.getAllUser()
+@app.route('/user', methods=('GET', 'POST', 'PUT', 'DELETE'))
+@app.route('/user/<idUser>/')
+def user(idUser = None):
 
-@app.route('/categories/')
+  if request.method == "POST":
+    return service.majUser(request.form)
+
+  if request.method == 'PUT':
+    return service.addUser(request.form)
+
+  if request.method == 'DELETE':
+    item = User.query.get(id)
+    if item:
+      db.session.delete(User.query.get(id))
+      db.session.commit()
+      return jsonify(deleted = "1")
+
+    return jsonify(deleted = "0")
+
+  return service.getAllUser(idUser)
+
+@app.route('/categories/', methods=('GET', 'POST', 'PUT', 'DELETE'))
 @app.route('/categories/<pin>/')
 def categories(pin = None):
+  if request.method == "POST":
+    return service.majCategory(request.form)
+
+  if request.method == 'PUT':
+    return service.addCategory(request.form)
+
+  if request.method == 'DELETE':
+    item = Category.query.get(id)
+    if item:
+      db.session.delete(Category.query.get(id))
+      db.session.commit()
+      return jsonify(deleted = "1")
+
+    return jsonify(deleted = "0")
+
   return service.getAllCategory(pin)
 
 @app.route('/category/<category>/')
@@ -86,63 +146,26 @@ def delete(obj = None, id = None):
   db.session.commit()
   return jsonify(retour = "1") #object deleted
 
-
-#test
-@app.route('/test', methods=('GET', 'POST'))
-def test():
-  if request.method == 'POST':
-    return service.test(request.form)
-  return jsonify(error="false request")
-
-@app.route('/test2')
-def test2():
-  print "0"
-
-  cat1 = Category.query.get(7)
-
-  print str(cat1.nom)
-
-  
-
-  print "1"
-  pun = Pin("1&er", 123, 134)
-
-  #cat1.pins.append(pun)
-
-  print "2"
-  #db.session.add(pun)
-  print "3"
-
-  #db.session.commit()
-
-  print "5"
-
-
-  return str(cat1.pins[2].title)
-
-@app.route('/test3')
-def test3():
-  print "--------------------------------\n\n\n"
-
-  pin = Pin.query.filter_by(title="1er").first()
-  print str(pin.id)
-  print pin.title
-  print str(pin.categories)
-
-  return pin.categories[0].id
-
-@app.route('/useer')
-def displaye():
-  print "useer"
-  return render_template('JSON.html')
-
-
 @app.errorhandler(404)
 def page_not_found(error):
     return jsonify(error="404"), 404
+	
+
+def load_facebook_event():
+  facebookPin.refreshFacebookData()
+
+def refresh():
+	while 1:
+		velov.refreshVelovData(VELOV_DATA_SOURCE)
+		time.sleep(DATA_REFRESH_INTERVAL)
+
+def start_refresh_thread():
+	thread.start_new_thread (refresh, ())
 
 if __name__ == '__main__':
-  app.debug = True
-  app.run()
-  #port = int(os.environ.get("PORT", 5000))
-  #app.run(host='0.0.0.0', port=port)
+
+	#app.debug = True
+	start_refresh_thread()
+	service.logMessage("Démarrage du serveur")
+	app.run()
+	

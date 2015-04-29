@@ -1,9 +1,15 @@
 from src import model
-from src.model import User, Pin, Category
-from flask import Flask, flash, render_template, request, session, jsonify
+
+from src.model import User, Pin, Category, Velov
+from flask import Flask, flash, render_template, request, session
+from flask.ext.jsonpify import jsonify
 from flask.ext.sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+import time
+
+def logMessage(message):
+	print("[LOG]["+time.strftime("%H:%M:%S") + "] "+message)
 
 def connectToDatabase():
     """
@@ -26,11 +32,9 @@ def getAllPin(category):
 			items = []
 	else:
 		items = Pin.query.all()
-
 	if items:
 		print "Pins non vides"
 		return jsonify(pins=[item.serialize() for item in items])
-
 	print "pins vide"
 	return jsonify(error="No pins")
 
@@ -48,7 +52,7 @@ def getPinById(idPin):
 
 	return jsonify(error = "Invalid parameters")
 
-def getAllUser():
+def getAllUser(idUser):
 	print "getAllUser"
 
 	items = User.query.all()
@@ -92,9 +96,6 @@ def getCategoryById(category):
 		return jsonify(error="No category")
 
 	return jsonify(error = "Invalid parameters")
-
-
-
 	
 
 def authentification(form):
@@ -104,7 +105,6 @@ def authentification(form):
 	return jsonify(error="authentification error")
 
 def addPin(form):
-	print "addPin"
 	"""if (form['title'] and form['user'] and form['lng'] and form['lat']):
 		exist = Pin.query.filter_by(title=form['title'], lng=form['lng'], lat=form['lat']).first()
 		
@@ -124,6 +124,26 @@ def addPin(form):
 	#	return jsonify(pin = pin.serialize()) 
 		
 	#return jsonify(error="invalid parameters")
+	
+#updates or creates a velov 
+def updateVelovByIdVelov(current):
+	if current:
+		item = Velov.query.filter_by(idVelov=current.idVelov).first()
+		
+		if item:
+			item.velo = current.velo
+			item.libre = current.libre
+			db.session.commit()
+		else:
+			addPin(current)
+		
+#Creates Facebook events 
+def updateFacebookByIdFacebook(current):
+	if current:
+		item = FacebookPin.query.filter_by(idFacebook=current.idFacebook).first()
+		
+		if item == None:
+			addPin(current)
 
 def addUser(form):
 	if (form['pseudo'] and form['passw']):
