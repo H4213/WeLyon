@@ -33,6 +33,7 @@ def createVelovTable(urlSource) :
 		obj = Velov(title, lnd, lat, idUser, [], description)
 		obj.libre = data["values"][i][12]
 		obj.velo = data["values"][i][13]
+
 		obj.idVelov = data["values"][i][17]
 		listVelov.append(obj);
 
@@ -41,6 +42,7 @@ def createVelovTable(urlSource) :
 	
 	return listVelov
 	
+
 
 
 #rafraichit ou ajoute les donnees dans la base

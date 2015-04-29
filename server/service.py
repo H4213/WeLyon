@@ -5,6 +5,10 @@ from flask.ext.jsonpify import jsonify
 from flask.ext.sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+import time
+
+def logMessage(message):
+	print("[LOG]["+time.strftime("%H:%M:%S") + "] "+message)
 
 def connectToDatabase():
     """
