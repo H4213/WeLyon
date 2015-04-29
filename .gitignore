@@ -3,3 +3,7 @@ server/service.pyc
 *.pyc
 *.pyc
 server/*.pyc
+*.pyc
+src/model.pyc
+*.pyc
+*.pyc

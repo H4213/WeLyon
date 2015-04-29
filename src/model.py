@@ -87,8 +87,8 @@ class Pin(db.Model):
     description = db.Column(db.String(400)) 
     lng = db.Column(db.Float)
     lat = db.Column(db.Float)
-    
-    def __init__(self, title, lng, lat, idUser = 1, categories = [], description = ""):
+    score= db.Column(db.Integer)
+    def __init__(self, title, lng, lat, idUser = 1, categories = [], description = "",score=0):
         self.idUser = idUser
         self.title = title
         self.categories = categories
