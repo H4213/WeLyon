@@ -14,12 +14,12 @@ def connectToDatabase():
 
 db = connectToDatabase()
 
-def getAllPin(category):
+def getAllPin(idCategory):
 	"""
 	request for all pins
 	"""
-	if (category):
-		cat = Category.query.get(category)
+	if (idCategory):
+		cat = Category.query.get(idCategory)
 		if cat:
 			items = cat.pins 
 		else:
