@@ -55,7 +55,6 @@ def createFacebookTable() :
 		title=t['data'][i]['name']
 
 		idEvent=t['data'][i]['id']
-		print(idEvent)
 		try :
 			Event=graph.request(idEvent)
 			if 'venue' in Event:
@@ -69,7 +68,6 @@ def createFacebookTable() :
 						else:
 							description =""
 						if 'start_time' in Event:
-							print("start")
 							start_time=Event['start_time']
 							if 'end_time' in Event:
 							
@@ -83,7 +81,6 @@ def createFacebookTable() :
 							obj = FacebookPin(title, longitude, latitude, idUser, [], description)
 							obj.dateBegin = start_time
 							obj.dateEnd = end_time
-							print (idEvent)
 							obj.idFacebook = idEvent
 							listFacebook.append(obj)
 							print("Ok")

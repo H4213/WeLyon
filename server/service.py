@@ -1,6 +1,10 @@
 from src import model
+<<<<<<< HEAD
 
 from src.model import User, Pin, Category, Velov
+=======
+from src.model import User, Pin, Category, Velov , FacebookPin
+>>>>>>> 1b97d05d497e93a3389538f721106dc23974ce93
 from flask import Flask, flash, render_template, request, session
 from flask.ext.jsonpify import jsonify
 from flask.ext.sqlalchemy import SQLAlchemy
