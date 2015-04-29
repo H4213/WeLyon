@@ -2,7 +2,8 @@
 # -*- coding:utf-8 -*-
 
 #constants
-VELOV_DATA_REFRESH_INTERVAL = 20.0
+VELOV_DATA_SOURCE = "https://download.data.grandlyon.com/ws/rdata/jcd_jcdecaux.jcdvelov/all.json"
+VELOV_DATA_REFRESH_INTERVAL = 60.0
 
 import sys
 reload(sys)
@@ -148,7 +149,11 @@ def page_not_found(error):
     return jsonify(error="404"), 404
 	
 
-
+#lance le rafraichissement periodique des données velov
+def start_velov_data(tempo = 60.0):
+	velov.refreshVelovData(VELOV_DATA_SOURCE)
+	threading.Timer(tempo, start_velov_data, [tempo]).start()
+	
 
 if __name__ == '__main__':
 	
@@ -158,6 +163,6 @@ if __name__ == '__main__':
 	
 	
 	print("[LOG] Lancement du rafraichissement des donnees Velov")
-	velov.start_velov_data(VELOV_DATA_REFRESH_INTERVAL)
+	start_velov_data(VELOV_DATA_REFRESH_INTERVAL)
   #port = int(os.environ.get("PORT", 5000))
   #app.run(host='0.0.0.0', port=port)
