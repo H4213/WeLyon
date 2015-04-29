@@ -10,7 +10,7 @@ from sqlalchemy.orm import backref, relation
 
 app = Flask(__name__)
 #app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://tmucotknskzdvn:B5Hyna3G7I1xIhPj3i_CSdl-GS@ec2-54-163-238-96.compute-1.amazonaws.com:5432/d6fisokcj01ulm'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://H4213:SabreESS32@82.241.33.248:3306/WeLyon-preprod'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://H4213:SabreESS32@82.241.33.248:3306/WeLyon-paul'
 db = SQLAlchemy(app)
  
 ########################################################################
@@ -193,4 +193,41 @@ class Velov(Pin):
     __mapper_args__ = {
         'polymorphic_identity':'velov',	
     }
+
+class FacebookPin(DynPin):
+    __tablename__ = 'facebookpins'
+
+    id = Column(db.Integer, db.ForeignKey('dynpins.id'), primary_key=True)
+    idFacebook = Column(db.BigInteger)
+
+    def serialize(self):
+        return {
+            'id': self.id,
+            'type' : 'facebook',
+            'idFacebook': self.idFacebook,
+            'user': self.idUser,
+            'title': self.title,
+            'category': [item.serializeSmall() for item in self.categories],
+            'description': self.description,
+            'lng': self.lng,
+            'lat': self.lat,
+        }
+
+    def serializeSmall(self):
+        return {
+            'id': self.id,
+            'title': self.title,
+        }
+        
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    __mapper_args__ = {
+        'polymorphic_identity':'facebook',
+        
+        
+        
+    }
+
 db.create_all()
