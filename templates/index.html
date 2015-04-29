@@ -40,18 +40,44 @@
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse" id="navbar-collapse">
                         <ul class="nav navbar-nav navbar-right">
-                            <button  type="button" class="btn btn-default navbar-btn">S'inscrire</button>
-                            <button  type="button" class="btn btn-default navbar-btn">Se connecter</button>
+                            <button id="signinButton"  type="button" class="btn btn-default navbar-btn">S'inscrire</button>
+                            <button id="connectButton" type="button" class="btn btn-default navbar-btn">Se connecter</button>
                         </ul>
                     </div><!-- /.navbar-collapse -->
                 </div><!-- /.container-fluid -->
             </div>
         </div>
 
+        <div id="incscriptionPanel" style="display:none">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="inscrirePseudo">Pseudo</label>
+                            <input type="text" class="form-control" id="inscrirePseudo" placeholder="pseudo">
+                          </div>
+                          <div class="form-group">
+                            <label for="inscrireEmail">Email</label>
+                            <input type="email" class="form-control" id="inscrireEmail" placeholder="Entrez votre email">
+                          </div>
+                          <div class="form-group">
+                            <label for="inscrireMdP">Mot de Passe</label>
+                            <input type="password" class="form-control" id="inscrireMdP" placeholder="Mot de Passe">
+                          </div>
+                          <div class="form-group">
+                            <label for="confirmerMdP">Confirmer mot de passe</label>
+                            <input type="password" class="form-control" id="confirmerMdP" placeholder="Confirmez votre mot de passe">
+                          </div>
+                          <button type="okButton" class="btn btn-default pull-right">S'inscrire</button>
+                    </form>
+                </div>
+            </div>               
+        </div>
+
         <div id="container" class="container-fluid">
             <div class="row">
 
-                <div id="alert" class="col-sm">
+                <div id="alert">
                 </div>
 
                 <div id="filters" class="col-sm-12 col-md-2">
@@ -70,24 +96,25 @@
                     </div>
 
                     <div id="categories" class="btn-group-vertical btn-block" role="group" aria-label="...">
-                        <button class="col-md-4 btn btn-default" type="button"><strong>Categories</strong></button> 
-                        <button class="col-md-4 btn btn-default" type="button">Categorie 1</button> 
-                        <button class="col-md-4 btn btn-default" type="button">Categorie 2</button> 
-                        <button class="col-md-4 btn btn-default" type="button">Categorie 3</button>
+                        <button id="categoryButton" class="col-md-4 btn btn-default category-title" type="button"><strong>Categories</strong></button> 
+                        <button class="col-md-4 btn btn-default category-item" type="button" style="display:none">Categorie 1</button> 
+                        <button class="col-md-4 btn btn-default category-item" type="button" style="display:none">Categorie 2</button> 
+                        <button class="col-md-4 btn btn-default category-item" type="button" style="display:none">Categorie 3</button>
                     </div>                                                       
                 </div>
 
                 <div id="main" class="col-sm-12 col-md-10">
                     <div id="visibility" class="row">
-                        <div class="col-md-12 btn-group" aria-label="Basic example" role="group">
-                            <button class="col-md-4 btn btn-default" type="button">On FIRE</button>
-                            <button class="col-md-4 btn btn-default active" type="button">All</button>
-                            <button class="col-md-4 btn btn-default" type="button">Fresh</button>
+                        <div class="col-md-12 btn-group" role="group">
+                            <button id="onFireButton" class="col-md-4 btn btn-default" type="button">On FIRE</button>
+                            <button id="allButton" class="col-md-4 btn btn-default active" type="button">All</button>
+                            <button id="freshButton" class="col-md-4 btn btn-default" type="button">Fresh</button>
                         </div>
                     </div>
 
                     <div id="map-container">
-                        <div id="map"></div>
+                        <div id="map">                            
+                        </div>
                     </div>        
                 </div>
 

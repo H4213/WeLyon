@@ -2,6 +2,24 @@
 	padding: 0;
 }
 
+#signinButton.active,   #signinButton:hover{
+    background-color:#0BAA16;
+    color: white;
+}
+
+#connectButton.active, #connectButton:hover{
+    background-color:#286090;
+    color: white;
+}
+
+#incscriptionPanel{
+    position:absolute;
+    top:45px;
+    right: 15px;
+    width:25%;
+    z-index:1000;
+}
+
 /*TODO: à voir*/
 #filters {
     border-right: 1px solid #eee;
