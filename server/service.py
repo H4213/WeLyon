@@ -9,6 +9,8 @@ import time
 
 def logMessage(message):
 	print("[LOG]["+time.strftime("%H:%M:%S") + "] "+message)
+def errorMessage(message):
+	print("[ERROR]["+time.strftime("%H:%M:%S") + "] "+message)
 
 def connectToDatabase():
     """
@@ -145,7 +147,7 @@ def updateFacebookByIdFacebook(current):
 			addPin(current)
 
 def addUser(form):
-	if (form['pseudo'] and form['passw']):
+	"""if (form['pseudo'] and form['passw']):
 
 		exist = User.query.filter_by(pseudo=form['pseudo']).first()
 
@@ -154,10 +156,14 @@ def addUser(form):
 			return jsonify(error="already exist")
 
 		user = User(form['pseudo'], form['passw'])
+	"""
+	db.session.add(form)
+	db.session.commit()
 
-		db.session.add(user)
-		db.session.commit()
+	#	return jsonify(id=user.id, pseudo=user.pseudo)
 
-		return jsonify(id=user.id, pseudo=user.pseudo)
-
-	return jsonify(error="invalid parameters")
+	#return jsonify(error="invalid parameters")
+	
+def addCategory(form):
+	db.session.add(form)
+	db.session.commit()
