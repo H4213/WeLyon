@@ -149,35 +149,17 @@ def displaye():
 def page_not_found(error):
     return jsonify(error="404"), 404
 	
-<<<<<<< HEAD
-def start_velov_data():
-  print("Refresh velov data")
-  t = threading.Timer(60.0, velov.refreshVelovData, [VELOV_DATA_SOURCE])
-  t.start()
-=======
+
 
 #lance le rafraichissement periodique des données velov
 def start_velov_data(tempo = 60.0):
 	velov.refreshVelovData(VELOV_DATA_SOURCE)
 	threading.Timer(tempo, start_velov_data, [tempo]).start()
->>>>>>> origin/dev-velov
+
 	
 #start_velov_data();
 
 if __name__ == '__main__':
-<<<<<<< HEAD
+
   app.debug = True
   app.run()
-
-=======
-	
-	print("[LOG] Démarrage du serveur")
-	#app.debug = True
-	app.run()
-	
-	
-	print("[LOG] Lancement du rafraichissement des donnees Velov")
-	start_velov_data(VELOV_DATA_REFRESH_INTERVAL)
->>>>>>> origin/dev-velov
-  #port = int(os.environ.get("PORT", 5000))
-  #app.run(host='0.0.0.0', port=port)
