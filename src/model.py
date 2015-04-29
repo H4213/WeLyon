@@ -83,8 +83,8 @@ class Pin(db.Model):
     idUser = db.Column(db.Integer, db.ForeignKey("users.id"))
     title = db.Column(db.String(100))
     categories = db.relationship("Category",
-                    secondary=association_table,
-                    backref="pins")
+                    secondary=association_table)
+					
     description = db.Column(db.String(400)) 
     lng = db.Column(db.Float)
     lat = db.Column(db.Float)

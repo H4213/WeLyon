@@ -24,16 +24,19 @@ def createVelovTable(urlSource) :
 	listVelov = []
 	service.logMessage(".Parsing the json file")
 	
-	categorie = Category.query.filter_by(nom = "Velo'v")
-	if categorie==None:
+	categorie = Category.query.filter_by(nom = "Velo'v").first()
+	
+	if not(categorie):
 		init_databases.init_categories()
-		categorie = Category.query.filter_by(nom = "Velo'v")
+		categorie = Category.query.filter_by(nom = "Velo'v").first()
 		
+	
 	admin_user = User.query.filter_by(pseudo="admin").first()
 	if admin_user==None:
 		init_databases.init_admin_user()
+		admin_user = User.query.filter_by(pseudo="admin").first()
 		
-	for i in  range(0, 10):
+	for i in  range(0, 100):
 	#data["nb_results"]	
 		title = "Velov de " + data["values"][i][2]
 		if data["values"][i][11]=="OPEN":
@@ -43,12 +46,13 @@ def createVelovTable(urlSource) :
 		lat = data["values"][i][8]
 		lnd = data["values"][i][9]
 		
-		obj = Velov(title, lnd, lat, admin_user, [], description)
+		
+		obj = Velov(title, lnd, lat, admin_user.id, [categorie], description)
 		obj.libre = data["values"][i][12]
 		obj.velo = data["values"][i][13]
 
-		"""obj.idVelov = data["values"][i][17]
-		listVelov.append(obj);"""
+		obj.idVelov = data["values"][i][17]
+		listVelov.append(obj);
 
 	json_file.close()
 	os.remove('velov.json')

@@ -21,8 +21,8 @@ def init_admin_user():
 		service.logMessage("l'utilisateur 'admin' existe deja")
 
 def try_push_category(name, descr):
-	categorie = Category.query.filter_by(nom = name)
-	if categorie==None:
+	categorie = Category.query.filter_by(nom = name).first()
+	if categorie == None:
 		c = Category(name, descr)
 		service.addCategory(c)
 		
@@ -32,6 +32,5 @@ def init_categories():
 	try_push_category("Facebook Event", "Un evenenement facebook")
 	
 def init_all():
-	
 	init_admin_user()
-	init_categories();
+	init_categories()
