@@ -147,60 +147,6 @@ def delete(obj = None, id = None):
 
 
 
-#test
-@app.route('/test', methods=('GET', 'POST'))
-def test():
-  if request.method == 'POST':
-    return service.test(request.form)
-  return jsonify(error="false request")
-
-@app.route('/test2')
-def test2():
-  print "0"
-
-  cat1 = Category.query.get(7)
-
-  print str(cat1.nom)
-
-  
-
-  print "1"
-  pun = Pin("1&er", 123, 134)
-
-  #cat1.pins.append(pun)
-
-  print "2"
-  #db.session.add(pun)
-  print "3"
-
-  #db.session.commit()
-
-  print "5"
-
-
-  return str(cat1.pins[2].title)
-
-@app.route('/test3')
-def test3():
-  print "--------------------------------\n\n\n"
-
-  pin = Pin.query.filter_by(title="1er").first()
-  print str(pin.id)
-  print pin.title
-  print str(pin.categories)
-
-  return pin.categories[0].id
-
-@app.route('/useer')
-def displaye():
-  print "useer"
-  return render_template('JSON.html')
-
-
-@app.errorhandler(404)
-def page_not_found(error):
-    return jsonify(error="404"), 404
-	
 
 
 def refresh():
