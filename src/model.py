@@ -169,6 +169,7 @@ class Velov(Pin):
     def serialize(self):
         return {
             'id': self.id,
+            'type' : 'velov',
             'idVelov': self.idVelov,
             'user': self.idUser,
             'title': self.title,
