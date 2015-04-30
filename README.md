@@ -1,36 +1,48 @@
 # Smart-City - Serveur
 
-##Affichage des marqueurs
-###/marker  ou  /marker/"catégorie"
+##Affichage des Pins
+@app.route('/pins/<rank>', methods=('GET', 'POST', 'PUT', 'DELETE'))
+@app.route('/pins/<idPin>/<rank>')
+@app.route('/pins/category/<category>/<rank>')
 Affichage JSON de tous les marqueurs
 
+##Affichage des catégories
+@app.route('/categories/', methods=('GET', 'POST', 'PUT', 'DELETE'))
+@app.route('/categories/<category>/')
+@app.route('/categories/pin/<pin>/')
+
 ##Affichage des utilisateurs
-###/user
+@app.route('/users', methods=('GET', 'POST', 'PUT', 'DELETE'))
+@app.route('/users/<idUser>/')
 Affichage JSON de tous les utilisateurs (pseudo + pass)
 
 ##Authentification d'un utilisateur
-###/auth
+@app.route('/authentification', methods=('GET', 'POST'))
 Vérifie l'authentification et renvoie son id
 POST : 	*pseudo
 	*passw
 
-##Ajout d'un markeur
-###/add/marker
+##Ajout d'un objet
+###pin
 Vérifie qu'il n'y a pas un doublon sur la positon.
 Renvoie l'ID du nouveau marker
-POST : 	*user (id)
+PUT : 	*user (id)
 	*title
 	description
-	cathegorie
+	idCathegorie
 	*lng
 	*lat
 
-##Inscription d'un utilisateur
-###/add/user
+
+###user
 Vérifie qu'il n'y a pas un doublon sur le pseudo.
 Renvoie l'ID du nouvel user
-POST : 	*pseudo
+PUT : 	*pseudo
 	*passw
 
+###Catégorie
+PUT:  name
+      description
+      idFather (catégorie parente ex: Transport -> TCL, Velov, etc...)
 
 
