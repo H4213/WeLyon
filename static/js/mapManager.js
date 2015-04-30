@@ -20,6 +20,20 @@ function initMap() {
     };
     map = new google.maps.Map(document.getElementById('map'),
     							mapOptions);
+
+
+    google.maps.event.addListener(map, 'click', function(event , latlng) {
+    	var apinOUT = {
+    		lat : event.latLng.lat(),
+    		lng : event.latLng.lng(),
+    		iduser : 1,
+    		description : "fsdfsd",
+    		idCategory : 0,
+    	};
+    	var apinIn = doPost( "/add/pin/" , apinOUT)
+    	addMarker(apinIn);
+  	});
+
     refreshPins();
     setInterval(refreshPins, 60000 );
 }
@@ -134,15 +148,22 @@ function addMarker(aPin) {
 	
 	markers.push({pin : aPin,
 					marker : aMarker})
+	return aMarker;
 }
 
 
 function refreshPins () 
 {
+	clearMap();
+	doGetPins("/pins/");
+}
+
+function clearMap () {
 	for (var i = 0; i < markers.length; i++) {
     	markers[i].marker.setMap(null);
   	}
 	pins = [];
 	markers = [];
-	doGetPins("/pins/");
 }
+
+

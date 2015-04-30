@@ -103,7 +103,7 @@ def authentification(form):
 		return jsonify(id=user.id, pseudo=user.pseudo)
 	return jsonify(error="authentification error")
 
-def addPin(form):
+def addPin(aPin):
 	"""if (form['title'] and form['user'] and form['lng'] and form['lat']):
 		exist = Pin.query.filter_by(title=form['title'], lng=form['lng'], lat=form['lat']).first()
 		
@@ -117,7 +117,8 @@ def addPin(form):
 		
 		#FAUX pin = Pin(form['title'], float(form['lng']), float(form['lat']), form['user'], form['category'], form['description'])
 	"""	
-	db.session.add(form)
+	
+	db.session.add(aPin)
 	db.session.commit()
 		
 	#	return jsonify(pin = pin.serialize()) 

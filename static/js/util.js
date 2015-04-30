@@ -21,13 +21,13 @@ function doGetPins (parameters)
 	});	
 }
 
-function doPost (parameters){
+function doPost (parameters , data){
 	$.ajax({
-		url : URL,
+		url : URL + parameters,
 		dataType : "json",
 		method : "POST",
 		async : false,
-		data : parameters,
+		data : data,
 		success : function () {
 			console.log('Success');
 		},

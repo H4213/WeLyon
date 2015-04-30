@@ -119,7 +119,14 @@ def auth():
 @app.route('/add/pin', methods=('GET', 'POST'))
 def addPin():
   if request.method == 'POST':
-    return service.addPin(request.form)
+    lat = request.args.get('lat' , type=float)
+    print lat
+    lng = request.args.get('lng' , type=float)
+    print lng
+    idUser = request.args.get('idUser' , type=int)
+    desc = request.args.get('description' , type=str)
+    idCat = request.args.get('idCategory' , type=int)
+    return service.addPin( Pin(" ",lng, lat, 1, [], desc))
   return jsonify(error="false request")
 
 #inscription d'un utilisateur
